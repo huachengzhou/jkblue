@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache>
+    <diskStore path="/home/zhou/ssh_java/config/cache" />
+    <!-- 配置默认的缓存区 java.io.tmpdir-->
+    <defaultCache
+            maxElementsInMemory="10000"
+            eternal="false"
+            timeToIdleSeconds="120"
+            timeToLiveSeconds="120"
+            maxElementsOnDisk="10000000"
+            diskExpiryThreadIntervalSeconds="120"
+            memoryStoreEvictionPolicy="LRU"/>
+    <!-- 配置名为factory的缓存区 -->
+<!--
+     maxElementsInMemory:cache 中最多可以存放的元素的数量。如果放入cache中的元素超过这个数值，有两种情况：
+     1、若overflowToDisk的属性值为true，会将cache中多出的元素放入磁盘文件中。
+     2、若overflowToDisk的属性值为false，会根据memoryStoreEvictionPolicy的策略替换cache中原有的元素。
+
+     eternal ：意思是是否永驻内存。如果值是true，cache中的元素将一直保存在内存中，不会因为时间超时而丢失，
+     所以在这个值为true的时候，timeToIdleSeconds和timeToLiveSeconds两个属性的值就不起作用了。
+
+     timeToIdleSeconds：就是访问这个cache中元素的最大间隔时间。如果超过这个时间没有访问这个cache中的某个元素，那么这个元素将被从cache中清除。
+
+     timeToLiveSeconds:这是cache中元素的生存时间。意思是从cache中的某个元素从创建到消亡的时间，从创建开始计时，当超过这个时间，这个元素将被从cache中清除。
+
+     overflowToDisk ：溢出是否写入磁盘。系统会根据标签＜diskStore path="java.io.tmpdir"＞中path的值查找对应的属性值，
+     如果系统的java.io.tmpdir的值是 D:/temp，写入磁盘的文件就会放在这个文件夹下。
+
+     diskExpiryThreadIntervalSeconds：磁盘缓存的清理线程运行间隔一般不设置
+
+     以上时间值都是以秒作为单位的
+     -->
+    <cache name="factoryS"
+           maxElementsInMemory="10000"
+           eternal="false"
+           overflowToDisk="true"
+           timeToIdleSeconds="300"
+           timeToLiveSeconds="600"
+           memoryStoreEvictionPolicy="LRU"/>
+    <cache name="ContractServiceCache"
+           maxElementsInMemory="10000"
+           eternal="false"
+           overflowToDisk="true"
+           timeToIdleSeconds="300"
+           timeToLiveSeconds="600"
+           memoryStoreEvictionPolicy="LRU"/>
+    <cache name="ContractProductServiceCache"
+           maxElementsInMemory="10000"
+           eternal="false"
+           overflowToDisk="true"
+           timeToIdleSeconds="300"
+           timeToLiveSeconds="600"
+           memoryStoreEvictionPolicy="LRU"/>
+    <cache name="UserServiceCache"
+           maxElementsInMemory="10000"
+           eternal="false"
+           overflowToDisk="true"
+           timeToIdleSeconds="300"
+           timeToLiveSeconds="600"
+           memoryStoreEvictionPolicy="LRU"/>
+
+    <!-- shiro缓存 -->
+    <cache name="authorizationshiroRealmA"
+           maxElementsInMemory="10000"
+           eternal="false"
+           overflowToDisk="true"
+           timeToIdleSeconds="300"
+           timeToLiveSeconds="600"
+           memoryStoreEvictionPolicy="LRU"/>
+
+    <cache name="authorizationshiroRealmB"
+           maxElementsInMemory="10000"
+           eternal="false"
+           overflowToDisk="true"
+           timeToIdleSeconds="300"
+           timeToLiveSeconds="600"
+           memoryStoreEvictionPolicy="LRU"/>
+
+    <cache name="shiro_activeSessionCache"
+           maxElementsInMemory="10000"
+           eternal="false"
+           overflowToDisk="true"
+           timeToIdleSeconds="300"
+           timeToLiveSeconds="600"
+           memoryStoreEvictionPolicy="LRU"/>
+</ehcache>

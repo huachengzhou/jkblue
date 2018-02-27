@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.blue.jk.mapper.RoleMapper">
+    <!-- 开启本mapper的缓存  mybatis默认实现PerpetualCache 假如要和 ehcache实现类 cache type 修改为此 -->
+    <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>
+
+    <resultMap id="RoleMap" type="cn.blue.jk.domain.Role">
+        <id column="rid" property="rid" />
+        <result column="role_name" property="description" />
+        <result column="available" property="available" />
+        <result column="description" property="description" />
+        <collection property="privileges" ofType="cn.blue.jk.domain.Privilege">
+            <id column="Ppid" property="pid" />
+            <result column="privilege_name" property="privilege_name" />
+            <result column="Pdescription" property="description" />
+        </collection>
+    </resultMap>
+    <select id="get" parameterType="string" resultMap="RoleMap">
+            select role.*,p.description  'Pdescription',p.pid Ppid,p.privilege_name as 'privilege_name' from jk_role role ,privilege_role pr,jk_privilege p where role.rid=#{id} and  role.rid=pr.rid and pr.pid=p.pid
+    </select>
+    <select id="find" parameterType="map" resultMap="RoleMap">
+            select role.*,p.description  'Pdescription',p.pid Ppid,p.privilege_name as 'privilege_name' from jk_role role ,privilege_role pr,jk_privilege p where  role.rid=pr.rid and pr.pid=p.pid
+    </select>
+
+
+
+    <insert id="insert" parameterType="cn.blue.jk.domain.Role" >
+        insert into jk_role(rid,role_name,description,available) values(#{rid},#{role_name},#{description},#{available})
+    </insert>
+    <insert id="insertRolePrivilege" parameterType="map">
+        insert into privilege_role(rid,pid) values(#{role.rid},#{pid})
+    </insert>
+
+
+
+    <delete id="delete" parameterType="map">
+        delete from jk_role where
+        <foreach collection="ids" item="item_id" open="rid in(" close=")" separator=",">
+            #{item_id}
+        </foreach>
+    </delete>
+    <delete id="deletePrivilege_role" parameterType="map">
+        delete from privilege_role where
+        <foreach collection="ids" item="item_id" open="rid in(" close=")" separator=",">
+            #{item_id}
+        </foreach>
+    </delete>
+
+
+    <update id="update" parameterType="cn.blue.jk.domain.Role">
+        update jk_role
+        <set>
+        <if test="role_name != null">role_name=#{role_name},</if>
+        <if test="description != null">description=#{description},</if>
+        <if test="available != null">available=#{available}</if>
+        </set>
+        where rid=#{rid}
+    </update>
+
+</mapper>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.blue.jk.mapper.UserMapper">
+    <!-- 开启本mapper的缓存  mybatis默认实现PerpetualCache 假如要和 ehcache实现类 cache type 修改为此 -->
+    <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>
+
+    <resultMap id="UserMap" type="cn.blue.jk.domain.User">
+        <id column="uid" property="uid" />
+        <result column="password" property="password" />
+        <result column="name" property="name" />
+        <result column="username" property="username" />
+        <result column="salt" property="salt" />
+        <result column="time" property="time" />
+        <result column="lock_User" property="lock_User" />
+        <result column="organizationid" property="organizationid" />
+        <collection property="roles" ofType="cn.blue.jk.domain.Role">
+            <id column="rid" property="rid" />
+            <result column="available" property="available" />
+            <result column="rdescription" property="description" />
+            <result column="role_name" property="role_name" />
+        </collection>
+    </resultMap>
+    <select id="get" parameterType="string" resultMap="UserMap">
+        select u.*,r.rid,r.available,r.description rdescription,r.role_name from jk_user u,jk_role r,user_role ur where u.uid=ur.uid and ur.rid=r.rid and u.uid=#{id}
+    </select>
+    <select id="find" parameterType="map" resultMap="UserMap">
+        select u.*,r.rid,r.available,r.description rdescription,r.role_name from jk_user u,jk_role r,user_role ur where u.uid=ur.uid and ur.rid=r.rid
+    </select>
+
+    <insert id="insert" parameterType="cn.blue.jk.domain.User">
+        insert into jk_user(uid,time,lock_User,salt,password,name,username,organizationid) values(#{uid},#{time},#{lock_User},#{salt},#{password},#{name},#{username},#{organizationid})
+    </insert>
+    <insert id="insertUserRole" parameterType="map">
+        insert into user_role(uid,rid) values(#{user.uid},#{rid})
+    </insert>
+
+
+    <delete id="delete" parameterType="map">
+        delete from jk_user where
+        <foreach collection="ids" item="item_id" open="uid in(" close=")" separator=",">
+            #{item_id}
+        </foreach>
+    </delete>
+    <delete id="deleteUser_Role" parameterType="map">
+        delete from user_role where
+        <foreach collection="ids" item="item_id" open="uid in(" close=")" separator=",">
+            #{item_id}
+        </foreach>
+    </delete>
+
+
+    <update id="update" parameterType="cn.blue.jk.domain.User">
+        update jk_user
+        <set>
+            <if test="organizationid != null">organizationid=#{organizationid},</if>
+            <if test="username != null">username=#{username},</if>
+            <if test="name != null">name=#{name},</if>
+            <if test="password != null">password=#{password},</if>
+            <if test="salt != null">salt=#{salt},</if>
+            <if test="lock_User != null">lock_User=#{lock_User},</if>
+            <if test="time != null">time=#{time}</if>
+        </set>
+        where uid=#{uid}
+    </update>
+
+    <select id="login" parameterType="map" resultMap="UserMap">
+        select u.*,r.rid,r.available,r.description rdescription,r.role_name from jk_user u,jk_role r,user_role ur where u.uid=ur.uid and ur.rid=r.rid and username=#{username}
+    </select>
+
+</mapper>

@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="blueJk:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="blueJk-1.0-SNAPSHOT.war">
+      <element id="artifact" artifact-name="blueJk:war exploded" />
+    </root>
+  </artifact>
+</component>

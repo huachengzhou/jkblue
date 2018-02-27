@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.blue.jk.mapper.ContractMapper">
+    <!-- 开启本mapper的缓存  mybatis默认实现PerpetualCache 假如要和 ehcache实现类 cache type 修改为此 -->
+    <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>
+
+    <resultMap id="contractMap" type="cn.blue.jk.domain.Contract">
+        <id column="CONTRACT_ID" property="id" />
+        <result column="OFFEROR" property="offeror" />
+        <result column="CONTRACT_NO" property="contractNo" />
+        <result column="SIGNING_DATE" property="signingDate" />
+        <result column="INPUT_BY" property="inputBy" />
+        <result column="CHECK_BY" property="checkBy" />
+        <result column="INSPECTOR" property="inspector" />
+        <result column="TOTAL_AMOUNT" property="totalAmount" />
+        <result column="OUT_STATE" property="outState" />
+        <result column="IMPORT_NUM" property="importNum" />
+        <result column="SHIP_TIME" property="shipTime" />
+        <result column="CUSTOM_NAME" property="customName" />
+        <result column="CREQUEST" property="crequest" />
+        <result column="TRADE_TERMS" property="tradeTerms" />
+        <result column="CREATE_TIME" property="createTime" />
+        <result column="CREATE_DEPT" property="createDept" />
+        <result column="CREATE_BY" property="createBy" />
+        <result column="STATE" property="state" />
+        <result column="OLD_STATE" property="oldState" />
+        <result column="PRINT_STYLE" property="printStyle" />
+        <result column="REMARK" property="remark" />
+        <result column="DELIVERY_PERIOD" property="deliveryPeriod" />
+    </resultMap>
+    <select id="get" parameterType="string" resultMap="contractMap">
+        select * from contract_c where CONTRACT_ID=#{id}
+    </select>
+
+</mapper>

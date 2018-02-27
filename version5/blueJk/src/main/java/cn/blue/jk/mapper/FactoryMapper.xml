@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.blue.jk.mapper.FactoryMapper">
+    <!-- 开启本mapper的缓存  mybatis默认实现PerpetualCache 假如要和 ehcache实现类 cache type 修改为此 -->
+    <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>
+
+    <resultMap id="factoryRM" type="cn.blue.jk.domain.Factory">
+        <id column="FACTORY_PRODUCT_ID" property="id"/>
+        <result column="FULL_NAME" property="fullName"/>
+        <result column="FACTORY_NAME" property="factoryName"/>
+        <result column="PHONE" property="phone"/>
+        <result column="MOBILE" property="mobile"/>
+        <result column="FAX" property="fax"/>
+        <result column="CNOTE" property="cnote"/>
+        <result column="INSPECTOR" property="inspector"/>
+        <result column="STATE" property="state"/>
+
+        <result column="ORDER_NO" property="orderNo"/>
+        <result column="CREATE_BY" property="createBy"/>
+        <result column="CREATE_DEPT" property="createDept"/>
+        <result column="CREATE_TIME" property="createTime"/>
+    </resultMap>
+    <select id="find" parameterType="map" resultMap="factoryRM">
+        SELECT * from factory_c
+    </select>
+
+    <select id="get" parameterType="java.io.Serializable" resultMap="factoryRM" useCache="true" flushCache="true">
+        SELECT * from factory_c where FACTORY_PRODUCT_ID=#{id}
+    </select>
+
+    <insert id="insertFactory" parameterType="cn.blue.jk.domain.Factory">
+        insert into factory_c(FACTORY_PRODUCT_ID,FULL_NAME,FACTORY_NAME,PHONE,MOBILE,FAX,CNOTE,INSPECTOR,STATE,ORDER_NO,CREATE_BY,CREATE_DEPT,CREATE_TIME) values(
+        #{id},#{fullName},#{factoryName},#{phone},#{mobile},#{fax},#{cnote},#{inspector},#{state},#{orderNo},#{createBy},#{createDept},#{createTime})
+    </insert>
+
+    <update id="update" parameterType="cn.blue.jk.domain.Factory">
+        update factory_c
+        <set>
+            <if test="fullName != null">FULL_NAME=#{fullName},</if>
+            <if test="factoryName != null">FACTORY_NAME=#{factoryName},</if>
+            <if test="phone != null">PHONE=#{phone},</if>
+            <if test="mobile != null">MOBILE=#{mobile},</if>
+            <if test="fax != null">FAX=#{fax},</if>
+            <if test="cnote != null">CNOTE=#{cnote},</if>
+            <if test="inspector != null">INSPECTOR=#{inspector},</if>
+            <if test="state != null">STATE=#{state},</if>
+            <if test="orderNo != null">ORDER_NO=#{orderNo},</if>
+            <if test="createBy != null">CREATE_BY=#{createBy},</if>
+            <if test="createDept != null">CREATE_DEPT=#{createDept},</if>
+            <if test="createTime != null">CREATE_TIME=#{createTime}</if>
+        </set>
+        where FACTORY_PRODUCT_ID=#{id}
+    </update>
+
+    <update id="updateState" parameterType="map">
+        update factory_c <set>  <if test="state != null">STATE=#{state}</if> </set> where FACTORY_PRODUCT_ID=#{id}
+    </update>
+    <!-- 多个状态一起更新 -->
+    <update id="updateMoreState" parameterType="map">
+        update factory_c <set><if test="state != null">STATE=#{state}</if></set>
+        <foreach collection="ids" item="item_id" open=" where FACTORY_PRODUCT_ID in(" close=")" separator=",">
+            #{item_id}
+        </foreach>
+    </update>
+
+    <delete id="deleteById" parameterType="string">
+        delete from factory_c where FACTORY_PRODUCT_ID=#{id}
+    </delete>
+
+    <delete id="delete" parameterType="string">
+        <!-- delete from factory_c WHERE FACTORY_PRODUCT_ID in(2,1); -->
+        delete from factory_c WHERE
+         <foreach collection="ids" item="item_id" open="FACTORY_PRODUCT_ID in(" close=")" separator=",">
+            #{item_id}
+         </foreach>
+    </delete>
+
+
+</mapper>

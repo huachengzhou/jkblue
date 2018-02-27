@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.blue.jk.mapper.ContractMapper">
+    <!-- 开启本mapper的缓存  mybatis默认实现PerpetualCache 假如要和 ehcache实现类 cache type 修改为此 -->
+    <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>
+
+    <resultMap id="contractMap" type="cn.blue.jk.vo.ContractVO">
+        <id column="CONTRACT_ID" property="id"/>
+        <result column="OFFEROR" property="offeror"/>
+        <result column="CONTRACT_NO" property="contractNo"/>
+        <result column="SIGNING_DATE" property="signingDate"/>
+        <result column="INPUT_BY" property="inputBy"/>
+        <result column="CHECK_BY" property="checkBy"/>
+        <result column="INSPECTOR" property="inspector"/>
+        <result column="TOTAL_AMOUNT" property="totalAmount"/>
+        <result column="OUT_STATE" property="outState"/>
+        <result column="IMPORT_NUM" property="importNum"/>
+        <result column="SHIP_TIME" property="shipTime"/>
+        <result column="CUSTOM_NAME" property="customName"/>
+        <result column="CREQUEST" property="crequest"/>
+        <result column="TRADE_TERMS" property="tradeTerms"/>
+        <result column="CREATE_TIME" property="createTime"/>
+        <result column="CREATE_DEPT" property="createDept"/>
+        <result column="CREATE_BY" property="createBy"/>
+        <result column="STATE" property="state"/>
+        <result column="OLD_STATE" property="oldState"/>
+        <result column="PRINT_STYLE" property="printStyle"/>
+        <result column="REMARK" property="remark"/>
+        <result column="DELIVERY_PERIOD" property="deliveryPeriod"/>
+    </resultMap>
+    <resultMap id="contractMapA" type="cn.blue.jk.vo.ContractVO" extends="contractMap">
+        <collection property="contractProducts" ofType="cn.blue.jk.vo.ContractProductVO">
+            <id column="cp_id" property="id" />
+            <result column="cp_amount" property="amount" />
+            <result column="cp_exts" property="exts" />
+            <result column="cp_orderNo" property="orderNo" />
+            <result column="cp_finished" property="finished" />
+            <result column="cp_price" property="price" />
+            <result column="cp_packingUnit" property="packingUnit" />
+            <result column="cp_boxNum" property="boxNum" />
+            <result column="cp_loadingRate" property="loadingRate" />
+            <result column="cp_outNumber" property="outNumber" />
+            <result column="cp_cnumber" property="cnumber" />
+            <result column="cp_productDesc" property="productDesc" />
+            <result column="cp_productImage" property="productImage" />
+            <result column="cp_productNo" property="productNo" />
+            <association property="factory" javaType="cn.blue.jk.domain.Factory">
+                <id column="fc_id" property="id" />
+                <result column="fc_name" property="factoryName" />
+                <result column="fc_factoryName" property="factoryName" />
+                <result column="fc_fullName" property="fullName" />
+                <result column="fc_mobile" property="mobile" />
+                <result column="fc_phone" property="phone" />
+                <result column="fc_fax" property="fax" />
+                <result column="fc_cnote" property="cnote" />
+                <result column="fc_inspector" property="inspector" />
+                <result column="fc_orderNo" property="orderNo" />
+                <result column="fc_state" property="state" />
+                <result column="fc_createBy" property="createBy" />
+                <result column="fc_createDept" property="createDept" />
+                <result column="fc_createTime" property="createTime" />
+            </association>
+            <collection property="extCproducts" ofType="cn.blue.jk.vo.ExtCproductVO">
+                <id column="e_ext_cproductId" property="id" />
+                <result column="e_amount" property="amount" />
+                <result column="e_orderNo" property="orderNo" />
+                <result column="e_product_request" property="productRequest" />
+                <result column="e_price" property="price" />
+                <result column="e_packingUnit" property="packingUnit" />
+                <result column="e_cnumber" property="cnumber" />
+                <result column="e_productDesc" property="productDesc" />
+                <result column="e_productImage" property="productImage" />
+                <result column="e_productNo" property="productNo" />
+                <result column="e_ctype" property="ctype" />
+            </collection>
+        </collection>
+    </resultMap>
+
+    <select id="get" parameterType="string" resultMap="contractMap">
+        select * from contract_c where CONTRACT_ID=#{id}
+    </select>
+
+    <select id="find" resultMap="contractMapA" parameterType="map">
+        select c.*,
+cpc.contractId cp_contractId,cpc.CONTRACT_PRODUCT_ID cp_id,cpc.amount cp_amount,cpc.exts cp_exts,cpc.orderNo cp_orderNo,cpc.finished cp_finished,
+cpc.price cp_price,cpc.packingUnit cp_packingUnit,cpc.boxNum cp_boxNum,cpc.loadingRate cp_loadingRate,cpc.outNumber cp_outNumber,
+cpc.cnumber cp_cnumber,cpc.productDesc cp_productDesc,cpc.productImage cp_productImage,cpc.productNo cp_productNo,
+
+ext.EXT_CPRODUCT_ID e_ext_cproductId,ext.AMOUNT e_amount,ext.ORDER_NO e_orderNo,ext.PRODUCT_REQUEST e_product_request,ext.PRICE e_price,
+ext.PACKING_UNIT e_packingUnit,ext.CNUMBER e_cnumber,ext.PRODUCT_DESC e_productDesc,ext.PRODUCT_IMAGE e_productImage,
+ext.PRODUCT_NO e_productNo,ext.CTYPE e_ctype,
+
+fc.FACTORY_PRODUCT_ID fc_id,fc.FACTORY_NAME fc_name,fc.FULL_NAME fc_fullName,fc.FACTORY_NAME fc_factoryName,fc.MOBILE fc_mobile,
+fc.PHONE fc_phone,fc.FAX fc_fax,fc.CNOTE fc_cnote,fc.INSPECTOR fc_inspector,fc.ORDER_NO fc_orderNo,fc.STATE fc_state,
+fc.CREATE_BY fc_createBy,fc.CREATE_DEPT fc_createDept,fc.CREATE_TIME fc_createTime
+
+from contract_c AS c LEFT JOIN contract_product_c cpc ON cpc.contractId=c.CONTRACT_ID
+  LEFT JOIN ext_cproduct_c ext ON ext.CONTRACT_PRODUCT_ID=cpc.CONTRACT_PRODUCT_ID LEFT JOIN factory_c fc  ON fc.FACTORY_PRODUCT_ID=ext.FACTORY_ID
+    </select>
+
+    <insert id="insert" parameterType="cn.blue.jk.domain.Contract">
+        insert into contract_c(CONTRACT_ID,OFFEROR,SIGNING_DATE,INPUT_BY,CHECK_BY,INSPECTOR,TOTAL_AMOUNT,OUT_STATE,IMPORT_NUM,SHIP_TIME,
+        CUSTOM_NAME,CREQUEST,TRADE_TERMS,CREATE_TIME,CREATE_DEPT,CREATE_BY,STATE,OLD_STATE,PRINT_STYLE,REMARK,DELIVERY_PERIOD,CONTRACT_NO) values(
+        #{id},#{offeror},#{signingDate},#{inputBy},#{checkBy},#{inspector},#{totalAmount},#{outState},#{importNum},
+        #{shipTime},#{customName},#{crequest},#{tradeTerms},#{createTime},#{createDept},#{createBy},
+        #{state},#{oldState},#{printStyle},#{remark},#{deliveryPeriod},#{contractNo}
+        )
+    </insert>
+
+    <delete id="deleteById" parameterType="string">
+        delete from contract_c where CONTRACT_ID=#{id}
+    </delete>
+
+    <delete id="delete" parameterType="map">
+        delete from contract_c where
+        <foreach collection="ids" item="ITEM_ID" open="CONTRACT_ID in(" close=")" separator=",">
+        #{ITEM_ID}
+        </foreach>
+    </delete>
+
+    <update id="update" parameterType="cn.blue.jk.domain.Contract">
+        update contract_c
+        <set>
+            <if test="offeror != null">OFFEROR=#{offeror},</if>
+            <if test="signingDate != null">SIGNING_DATE=#{signingDate},</if>
+            <if test="inputBy != null">INPUT_BY=#{inputBy},</if>
+            <if test="checkBy != null">CHECK_BY=#{checkBy},</if>
+            <if test="inspector != null">INSPECTOR=#{inspector},</if>
+            <if test="totalAmount != null">TOTAL_AMOUNT=#{totalAmount},</if>
+            <if test="outState != null">OUT_STATE=#{outState},</if>
+            <if test="importNum != null">IMPORT_NUM=#{importNum},</if>
+            <if test="shipTime != null">SHIP_TIME=#{shipTime},</if>
+            <if test="customName != null">CUSTOM_NAME=#{customName},</if>
+            <if test="crequest != null">CREQUEST=#{crequest},</if>
+            <if test="tradeTerms != null">TRADE_TERMS=#{tradeTerms},</if>
+            <if test="createTime != null">CREATE_TIME=#{createTime},</if>
+            <if test="createDept != null">CREATE_DEPT=#{createDept},</if>
+            <if test="createBy != null">CREATE_BY=#{createBy},</if>
+            <if test="state != null">STATE=#{state},</if>
+            <if test="oldState != null">OLD_STATE=#{oldState},</if>
+            <if test="printStyle != null">PRINT_STYLE=#{printStyle},</if>
+            <if test="remark != null">REMARK=#{remark},</if>
+            <if test="contractNo != null">CONTRACT_NO=#{contractNo},</if>
+            <if test="deliveryPeriod != null">DELIVERY_PERIOD=#{deliveryPeriod}</if>
+        </set>
+        where CONTRACT_ID=#{id}
+    </update>
+
+    <update id="updateState" parameterType="map">
+        update contract_c
+        <set><if test="state != null">STATE=#{state}</if></set>
+        <foreach collection="ids" item="ITEM_STATE" open="where CONTRACT_ID in(" close=")" separator=",">
+            #{ITEM_STATE}
+        </foreach>
+    </update>
+
+    <!-- 级联删除：删除货物前，先删除附件 -->
+    <delete id="deleteByContractProduct" parameterType="string">
+        delete from contract_product_c WHERE contractId=#{id}
+    </delete>
+    <delete id="deleteByExtCproduct" parameterType="string">
+        delete from ext_cproduct_c where CONTRACT_PRODUCT_ID in(select CONTRACT_PRODUCT_ID from contract_product_c where contractId=#{id})
+    </delete>
+
+</mapper>

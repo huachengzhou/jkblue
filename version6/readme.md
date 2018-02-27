@@ -1,0 +1,12 @@
+blueJk 修改 blueJk-1中的cn.blue.jk.service.impl.FactoryServiceImpl
+对大部分的缓存方法做了测试并且把部分CachePut注解的改为了CacheEvict
+在测试中发现CachePut假如不写spel表达式的condition那么有很大几率失效,特别是修改很小的对象的单个属性的时候很容易失效
+具体问题是在页面上提交请求之后,虽然提交了,但是页面上却没有显示效果,但是数据库倒是同步修改了
+因此对于这个问题必须得注意呢!
+然后对于mybatis mapper二级缓存也做过测试已经测试成功,但是意义不大呢!命中率实在太低了,而且假如是集群也不好同步,当然可以使用广播的方法
+
+关于spring级别的缓存假如是单机那么使用ehcache已经可以了,那么要是使用集群共享缓存可以采用redis当然也可以使用ehcache采用广播的方法来共享
+
+关于为什么spring ehcache采用缓存广播而mybatis mapper级别不采用　主要考虑　性价比和效率吧!
+
+假如导入prject 建议是blueJk

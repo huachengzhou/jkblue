@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.blue.jk.mapper.PrivilegeMapper">
+    <!-- 开启本mapper的缓存  mybatis默认实现PerpetualCache 假如要和 ehcache实现类 cache type 修改为此 -->
+    <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>
+    <resultMap id="PrivilegeMap" type="cn.blue.jk.domain.Privilege">
+        <id column="pid" property="pid"/>
+        <result column="privilege_name" property="privilege_name"/>
+        <result column="description" property="description"/>
+    </resultMap>
+    <select id="find" parameterType="map" resultMap="PrivilegeMap">
+        select * from jk_privilege where 1=1
+    </select>
+
+    <select id="get" parameterType="string" resultMap="PrivilegeMap">
+        select * from jk_privilege where pid=#{id}
+    </select>
+
+    <insert id="insert" parameterType="cn.blue.jk.domain.Privilege">
+        insert into  jk_privilege(pid,description,privilege_name) values(#{pid},#{description},#{privilege_name})
+    </insert>
+
+    <delete id="delete" parameterType="map">
+        delete from jk_privilege WHERE
+        <foreach collection="ids" item="item_id" open="pid in(" close=")" separator=",">
+            #{item_id}
+        </foreach>
+    </delete>
+
+    <delete id="deleteById" parameterType="string">
+        delete from jk_privilege where pid=#{pid}
+    </delete>
+
+    <update id="update" parameterType="cn.blue.jk.domain.Privilege">
+        update jk_privilege set privilege_name=#{privilege_name},description=#{description} where pid=#{pid}
+    </update>
+</mapper>

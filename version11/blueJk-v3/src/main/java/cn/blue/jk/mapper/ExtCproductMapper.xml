@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.blue.jk.mapper.ExtCproductMapper">
+    <!-- 开启本mapper的缓存  mybatis默认实现PerpetualCache 假如要和 ehcache实现类 cache type 修改为此 -->
+    <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>
+
+    <update id="update" parameterType="cn.blue.jk.domain.ExtCproduct">
+        update ext_cproduct_c
+        <set>
+            <if test="contractProductId != null">CONTRACT_PRODUCT_ID=#{contractProductId},</if>
+            <if test="factoryId != null">FACTORY_ID=#{factoryId},</if>
+            <if test="factoryName != null">FACTORY_NAME=#{factoryName},</if>
+            <if test="ctype != null">CTYPE=#{ctype},</if>
+            <if test="productNo != null">PRODUCT_NO=#{productNo},</if>
+            <if test="productImage != null">PRODUCT_IMAGE=#{productImage},</if>
+            <if test="productDesc != null">PRODUCT_DESC=#{productDesc},</if>
+            <if test="cnumber != null">CNUMBER=#{cnumber},</if>
+            <if test="packingUnit != null">PACKING_UNIT=#{packingUnit},</if>
+            <if test="price != null">PRICE=#{price},</if>
+            <if test="amount != null">AMOUNT=#{amount},</if>
+            <if test="productRequest != null">PRODUCT_REQUEST=#{productRequest},</if>
+            <if test="orderNo != null">ORDER_NO=#{orderNo}</if>
+        </set>
+        where EXT_CPRODUCT_ID=#{id}
+    </update>
+
+    <resultMap id="extCproductMap" type="cn.blue.jk.domain.ExtCproduct">
+        <id column="EXT_CPRODUCT_ID" property="id" />
+        <result property="contractProductId" column="CONTRACT_PRODUCT_ID" />
+        <result property="factoryId" column="FACTORY_ID" />
+        <result property="factoryName" column="FACTORY_NAME" />
+        <result property="ctype" column="CTYPE" />
+        <result property="productNo" column="PRODUCT_NO" />
+        <result property="productImage" column="PRODUCT_IMAGE" />
+        <result property="productDesc" column="PRODUCT_DESC" />
+        <result property="cnumber" column="CNUMBER" />
+        <result property="packingUnit" column="PACKING_UNIT" />
+        <result property="price" column="PRICE" />
+        <result property="packingUnit" column="packingUnit" />
+        <result property="amount" column="AMOUNT" />
+        <result property="productRequest" column="PRODUCT_REQUEST" />
+        <result property="orderNo" column="ORDER_NO" />
+    </resultMap>
+    <select id="get" parameterType="string" resultMap="extCproductMap">
+        select e.* from ext_cproduct_c  e where EXT_CPRODUCT_ID=#{id}
+    </select>
+
+    <select id="find" parameterType="map" resultMap="extCproductMap">
+        select e.* from ext_cproduct_c  e where 1=1
+        <if test="contractProductId != null">and CONTRACT_PRODUCT_ID=#{contractProductId}</if>
+    </select>
+
+    <insert id="insert" parameterType="cn.blue.jk.domain.ExtCproduct">
+        insert into ext_cproduct_c(
+        EXT_CPRODUCT_ID,CONTRACT_PRODUCT_ID,FACTORY_ID,FACTORY_NAME,PRODUCT_NO,CTYPE,PRODUCT_IMAGE,PRODUCT_DESC,CNUMBER,
+        PACKING_UNIT,PRICE,AMOUNT,PRODUCT_REQUEST,ORDER_NO)
+
+        values(#{id},#{contractProductId},#{factoryId},#{factoryName},#{productNo},#{ctype},#{productImage},#{productDesc},#{cnumber},
+        #{packingUnit},#{price},#{amount},#{productRequest},#{orderNo})
+    </insert>
+
+    <delete id="deleteById" parameterType="string">
+        delete from ext_cproduct_c where EXT_CPRODUCT_ID=#{id}
+    </delete>
+
+    <delete id="delete" parameterType="map">
+        delete from ext_cproduct_c
+        <foreach collection="ids" item="item_ID" open="where EXT_CPRODUCT_ID in(" close=")" separator=",">
+            #{item_ID}
+        </foreach>
+    </delete>
+
+
+
+</mapper>

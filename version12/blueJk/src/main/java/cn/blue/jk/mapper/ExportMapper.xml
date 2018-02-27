@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.blue.jk.mapper.ExportMapper">
+
+    <resultMap id="exportMap" type="cn.blue.jk.domain.Export">
+        <id property="id" column="EXPORT_ID" />
+        <result column="CREATE_TIME" property="createTime" />
+        <result column="CREATE_DEPT" property="createDept" />
+        <result column="CREATE_BY" property="createBy" />
+        <result column="MEASUREMENT" property="measurement" />
+        <result column="NET_WEIGHT" property="netWeight" />
+        <result column="GROSS_WEIGHT" property="grossWeight" />
+        <result column="STATE" property="state" />
+        <result column="PRICE_CONDITION" property="priceCondition" />
+        <result column="TRANSPORT_MODE" property="transportMode" />
+        <result column="DESTINATION_PORT" property="destinationPort" />
+        <result column="SHIPMENT_PORT" property="shipmentPort" />
+        <result column="REMARK" property="remark" />
+        <result column="MARKS" property="marks" />
+        <result column="CONSIGNEE" property="consignee" />
+        <result column="LCNO" property="lcno" />
+        <result column="CUSTOMER_CONTRACT" property="customerContract" />
+        <result column="CONTRACT_IDS" property="contractIds" />
+        <result column="extnum" property="extnum" />
+        <result column="epnum" property="epnum" />
+        <result column="INPUT_DATE" property="inputDate" />
+    </resultMap>
+
+	<select id="find" parameterType="map" resultMap="exportMap">
+        select (select count(*) from export_c ) as epnum,
+               (select count(*) from ext_eproduct_c exte WHERE export_product_id in(
+                 select export_product_id from export_product_c where e.EXPORT_ID=e.EXPORT_ID
+               )) as extnum,
+          e.CREATE_TIME,e.CREATE_DEPT,e.CREATE_BY,e.STATE,e.CNUMBER,e.PACKING_UNIT,e.AMOUNT,e.BOX_NUM,
+          e.CONSIGNEE,e.CONTRACT_IDS,e.TRANSPORT_MODE,e.TAX,e.SIZE_WIDTH,e.SIZE_LENGTH,e.SIZE_HEIGHT,e.EXPORT_ID,
+          e.PRICE_CONDITION,e.CNUMBER,e.INPUT_DATE,e.LCNO,e.GROSS_WEIGHT,e.COST_PRICE,e.COST_TAX,e.CSIZE,e.CUSTOMER_CONTRACT,
+          e.DESTINATION_PORT,e.MARKS,e.SHIPMENT_PORT,e.PACKING_LIST_ID,e.NET_WEIGHT,e.NO_TAX,e.EXPORT_ID,e.REMARK,e.MEASUREMENT
+        from export_c e
+	</select>
+
+    <select id="get" parameterType="string" resultMap="exportMap">
+        select (select count(*) from export_c ) as epnum,
+               (select count(*) from ext_eproduct_c exte WHERE export_product_id in(
+                 select export_product_id from export_product_c where e.EXPORT_ID=e.EXPORT_ID
+               )) as extnum,
+          e.CREATE_TIME,e.CREATE_DEPT,e.CREATE_BY,e.STATE,e.CNUMBER,e.PACKING_UNIT,e.AMOUNT,e.BOX_NUM,
+          e.CONSIGNEE,e.CONTRACT_IDS,e.TRANSPORT_MODE,e.TAX,e.SIZE_WIDTH,e.SIZE_LENGTH,e.SIZE_HEIGHT,e.EXPORT_ID,
+          e.PRICE_CONDITION,e.CNUMBER,e.INPUT_DATE,e.LCNO,e.GROSS_WEIGHT,e.COST_PRICE,e.COST_TAX,e.CSIZE,e.CUSTOMER_CONTRACT,
+          e.DESTINATION_PORT,e.MARKS,e.SHIPMENT_PORT,e.PACKING_LIST_ID,e.NET_WEIGHT,e.NO_TAX,e.EXPORT_ID,e.MEASUREMENT
+        from export_c e WHERE e.EXPORT_ID=#{id}
+    </select>
+
+    <update id="update" parameterType="cn.blue.jk.domain.Export">
+        UPDATE export_c
+        <set>
+            <if test="inputDate != null">         INPUT_DATE=#{inputDate},</if>
+            <if test="contractIds != null">         CONTRACT_IDS=#{contractIds},</if>
+            <if test="customerContract != null">         CUSTOMER_CONTRACT=#{customerContract},</if>
+            <if test="lcno != null">         LCNO=#{lcno},</if>
+            <if test="consignee != null">         CONSIGNEE=#{consignee},</if>
+            <if test="marks != null">         MARKS=#{marks},</if>
+            <if test="remark != null">         REMARK=#{remark},</if>
+            <if test="shipmentPort != null">         SHIPMENT_PORT=#{shipmentPort},</if>
+            <if test="destinationPort != null">         DESTINATION_PORT=#{destinationPort},</if>
+            <if test="transportMode != null">         TRANSPORT_MODE=#{transportMode},</if>
+            <if test="priceCondition != null">         PRICE_CONDITION=#{priceCondition},</if>
+            <if test="state != null">         STATE=#{state},</if>
+            <if test="grossWeight != null">         GROSS_WEIGHT=#{grossWeight},</if>
+            <if test="netWeight != null">         NET_WEIGHT=#{netWeight},</if>
+            <if test="measurement != null">         MEASUREMENT=#{measurement},</if>
+            <if test="createBy != null">         CREATE_BY=#{createBy},</if>
+            <if test="createDept != null">         CREATE_DEPT=#{createDept},</if>
+            <if test="createTime != null">         CREATE_TIME=#{createTime}</if>
+        </set>
+        WHERE EXPORT_ID=#{id}
+    </update>
+
+    <insert id="insert" parameterType="cn.blue.jk.domain.Export">
+        insert into export_c(EXPORT_ID,INPUT_DATE,CONTRACT_IDS,CUSTOMER_CONTRACT,LCNO,CONSIGNEE,marks,remark,SHIPMENT_PORT,DESTINATION_PORT,TRANSPORT_MODE,PRICE_CONDITION,STATE,GROSS_WEIGHT,NET_WEIGHT,MEASUREMENT,CREATE_BY,CREATE_DEPT,CREATE_TIME
+        )
+        values(#{id},#{inputDate},#{epnum},#{extnum},#{contractIds},#{customerContract},#{lcno},#{consignee},#{marks},#{remark},#{shipmentPort},#{destinationPort},#{transportMode},#{priceCondition},#{state},#{grossWeight},#{netWeight},#{measurement},#{createBy},#{createDept},#{createTime}
+        )
+    </insert>
+
+    <delete id="deleteBy" parameterType="string">
+        delete from export_c where EXPORT_ID=#{id}
+    </delete>
+
+    <delete id="delete" parameterType="map">
+        delete from export_c WHERE
+        <foreach collection="ids" item="item_id" open="EXPORT_ID in(" close=")" separator=",">
+            #{item_id}
+        </foreach>
+    </delete>
+
+</mapper>

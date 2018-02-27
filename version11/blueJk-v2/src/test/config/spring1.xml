@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <bean id="user1" class="cn.blue.jk.domain.User">
+        <property name="name" value="张三" />
+        <property name="username" value="zhangshan" />
+    </bean>
+
+    <bean id="user2" class="cn.blue.jk.domain.User" init-method="getName">
+        <constructor-arg value="zhangshan" type="java.lang.String" />
+        <property name="lock_User" value="true"  />
+    </bean>
+</beans>
