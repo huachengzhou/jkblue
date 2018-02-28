@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.io.Serializable;
 import java.net.URLDecoder;
 import java.util.Date;
 import java.util.Map;
@@ -40,7 +39,7 @@ public class UserController {
 
     @RequestMapping(value = "/sys/removeUser.action")
     public String removeUser(@RequestParam(value = "uid") String uid) throws ControllerException,Exception {
-        Serializable[] ids = uid.split(",");
+        String[] ids = uid.split(",");
         userService.delete(ids);
         logger.info("" + uid);
         return "redirect:/sys/listUser.action";

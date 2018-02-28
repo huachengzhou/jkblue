@@ -13,7 +13,6 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,7 +65,7 @@ public class FactoryServiceImpl implements FactoryService {
 
     @Cacheable(cacheNames = {"factoryServiceCache"}, keyGenerator = "keyGenerator")
     @Override
-    public Factory get(Serializable id) throws ServiceException {
+    public Factory get(String id) throws ServiceException {
         return factoryMapper.get(id);
     }
 
@@ -79,13 +78,13 @@ public class FactoryServiceImpl implements FactoryService {
      */
     @CacheEvict(cacheNames = {"factoryServiceCache"}, allEntries = true, keyGenerator = "keyGenerator")
     @Override
-    public void deleteById(Serializable id) throws ServiceException {
+    public void deleteById(String id) throws ServiceException {
         factoryMapper.deleteById(id);
     }
 
     @CacheEvict(cacheNames = {"factoryServiceCache"}, allEntries = true, keyGenerator = "keyGenerator")
     @Override
-    public void delete(Serializable[] ids) throws ServiceException {
+    public void delete(String[] ids) throws ServiceException {
         Map<String, Object> map = new HashMap<>();
         map.put("ids", ids);
         factoryMapper.delete(map);
@@ -112,7 +111,7 @@ public class FactoryServiceImpl implements FactoryService {
 
     @CacheEvict(cacheNames = {"factoryServiceCache"}, allEntries = true, keyGenerator = "keyGenerator")
     @Override
-    public void updateStateStart(Serializable id) throws ServiceException {
+    public void updateStateStart(String id) throws ServiceException {
         String state = FactoryState.FACTORY_STATE_START.getState();
         Map<String, Object> map = new HashMap<>();
         map.put("id", id);
@@ -122,7 +121,7 @@ public class FactoryServiceImpl implements FactoryService {
 
     @CacheEvict(cacheNames = {"factoryServiceCache"}, allEntries = true, keyGenerator = "keyGenerator")
     @Override
-    public void updateStateStop(Serializable id) throws ServiceException {
+    public void updateStateStop(String id) throws ServiceException {
         String state = FactoryState.FACTORY_STATE_STOP.getState();
         Map<String, Object> map = new HashMap<>();
         map.put("id", id);
@@ -132,7 +131,7 @@ public class FactoryServiceImpl implements FactoryService {
 
     @CachePut(cacheNames = {"factoryServiceCache"}, keyGenerator = "keyGenerator")
     @Override
-    public void updateStateStart(Serializable[] ids) throws ServiceException {
+    public void updateStateStart(String[] ids) throws ServiceException {
         String state = FactoryState.FACTORY_STATE_START.getState();
         Map<String, Object> map = new HashMap<>();
         map.put("ids", ids);
@@ -142,7 +141,7 @@ public class FactoryServiceImpl implements FactoryService {
 
     @CachePut(cacheNames = {"factoryServiceCache"}, keyGenerator = "keyGenerator")
     @Override
-    public void updateStateStop(Serializable[] ids) throws ServiceException {
+    public void updateStateStop(String[] ids) throws ServiceException {
         String state = FactoryState.FACTORY_STATE_STOP.getState();
         Map<String, Object> map = new HashMap<>();
         map.put("ids", ids);

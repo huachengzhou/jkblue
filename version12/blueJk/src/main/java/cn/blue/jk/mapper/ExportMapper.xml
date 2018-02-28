@@ -77,10 +77,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         WHERE EXPORT_ID=#{id}
     </update>
 
+    <update id="updateState" parameterType="map">
+        UPDATE export_c
+        <set>
+            <if test="state != null">STATE=#{state}</if>
+        </set>
+        WHERE EXPORT_ID=#{id}
+    </update>
+
     <insert id="insert" parameterType="cn.blue.jk.domain.Export">
-        insert into export_c(EXPORT_ID,INPUT_DATE,CONTRACT_IDS,CUSTOMER_CONTRACT,LCNO,CONSIGNEE,marks,remark,SHIPMENT_PORT,DESTINATION_PORT,TRANSPORT_MODE,PRICE_CONDITION,STATE,GROSS_WEIGHT,NET_WEIGHT,MEASUREMENT,CREATE_BY,CREATE_DEPT,CREATE_TIME
+        insert into export_c(EXPORT_ID,INPUT_DATE,CONTRACT_IDS,CUSTOMER_CONTRACT,LCNO,CONSIGNEE,MARKS,REMARK,SHIPMENT_PORT,DESTINATION_PORT,TRANSPORT_MODE,PRICE_CONDITION,STATE,GROSS_WEIGHT,NET_WEIGHT,MEASUREMENT,CREATE_BY,CREATE_DEPT,CREATE_TIME
         )
-        values(#{id},#{inputDate},#{epnum},#{extnum},#{contractIds},#{customerContract},#{lcno},#{consignee},#{marks},#{remark},#{shipmentPort},#{destinationPort},#{transportMode},#{priceCondition},#{state},#{grossWeight},#{netWeight},#{measurement},#{createBy},#{createDept},#{createTime}
+        values(#{id},#{inputDate},#{contractIds},#{customerContract},#{lcno},#{consignee},#{marks},#{remark},#{shipmentPort},#{destinationPort},#{transportMode},#{priceCondition},#{state},#{grossWeight},#{netWeight},#{measurement},#{createBy},#{createDept},#{createTime}
         )
     </insert>
 

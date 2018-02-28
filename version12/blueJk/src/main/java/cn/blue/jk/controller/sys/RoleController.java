@@ -13,7 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.io.Serializable;
 import java.net.URLDecoder;
 import java.util.List;
 import java.util.Map;
@@ -59,7 +58,7 @@ public class RoleController {
 
     @RequestMapping(value = "/removeRole.action")
     public String removeRole(@RequestParam(value = "rid") String rid) throws ControllerException,Exception {
-        Serializable[] ids = rid.split(",");
+        String[] ids = rid.split(",");
         roleService.delete(ids);
         logger.info("" + rid);
         return "redirect:/sys/listRole.action";

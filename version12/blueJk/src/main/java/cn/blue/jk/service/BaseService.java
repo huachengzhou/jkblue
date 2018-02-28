@@ -2,7 +2,6 @@ package cn.blue.jk.service;
 
 import cn.blue.jk.exception.ServiceException;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -16,6 +15,6 @@ public interface BaseService<T> {
 
     public List<T> find(Map<String, Object> map) throws ServiceException;
 
-    public T get(Serializable id, Map<String, Object> map) throws ServiceException;
+    public T get(String id, Map<String, Object> map) throws ServiceException;
 
 }

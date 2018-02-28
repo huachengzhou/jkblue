@@ -22,7 +22,7 @@ public class FactoryServiceTest {
 
     @Test
     public void deleteById() throws Exception {
-        factoryService.deleteById(1);
+        factoryService.deleteById(1+"");
     }
 
     @Test
@@ -33,8 +33,8 @@ public class FactoryServiceTest {
 
     @Test
     public void updateStateStart() throws Exception {
-        factoryService.updateStateStop(1);
-        Factory factory = factoryService.get(1);
+        factoryService.updateStateStop(1+"");
+        Factory factory = factoryService.get(1+"");
         System.out.println(factory.getState());
     }
 

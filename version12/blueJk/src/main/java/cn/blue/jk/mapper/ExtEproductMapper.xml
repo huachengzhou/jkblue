@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.blue.jk.mapper.ExtEproductMapper">
+
+    <resultMap id="domainMap" type="cn.blue.jk.domain.ExtEproduct">
+        <id property="id" column="EXT_EPRODUCT_ID" />
+        <result property="exportProductId" column="EXPORT_PRODUCT_ID" />
+        <result property="factoryId" column="FACTORY_ID" />
+        <result property="factoryName" column="FACTORY_NAME" />
+        <result property="ctype" column="CTYPE" />
+        <result property="productNo" column="PRODUCT_NO" />
+        <result property="productImage" column="PRODUCT_IMAGE" />
+        <result property="productDesc" column="PRODUCT_DESC" />
+        <result property="cnumber" column="CNUMBER" />
+        <result property="packingUnit" column="PACKING_UNIT" />
+        <result property="price" column="PRICE" />
+        <result property="amount" column="AMOUNT" />
+        <result property="productRequest" column="PRODUCT_REQUEST" />
+        <result property="orderNo" column="ORDER_NO" />
+    </resultMap>
+
+	<select id="find" parameterType="map" resultMap="domainMap">
+select (select count(*) from ext_eproduct_c) as CNUMBER,
+  eec.EXPORT_PRODUCT_ID,eec.PRODUCT_REQUEST,eec.PRICE,eec.PRODUCT_DESC,eec.PRODUCT_IMAGE,
+  eec.PRODUCT_NO,eec.FACTORY_ID,eec.FACTORY_NAME,eec.ORDER_NO,eec.PACKING_UNIT,eec.AMOUNT,eec.CNUMBER,
+  eec.CTYPE,eec.EXT_EPRODUCT_ID
+FROM ext_eproduct_c eec where 1=1
+	</select>
+
+    <select id="get" parameterType="string" resultMap="domainMap">
+select (select count(*) from ext_eproduct_c) as CNUMBER,
+  eec.EXPORT_PRODUCT_ID,eec.PRODUCT_REQUEST,eec.PRICE,eec.PRODUCT_DESC,eec.PRODUCT_IMAGE,
+  eec.PRODUCT_NO,eec.FACTORY_ID,eec.FACTORY_NAME,eec.ORDER_NO,eec.PACKING_UNIT,eec.AMOUNT,eec.CNUMBER,
+  eec.CTYPE,eec.EXT_EPRODUCT_ID
+FROM ext_eproduct_c eec where 1=1 and eec.EXT_EPRODUCT_ID=#{id}
+    </select>
+
+    <update id="update" parameterType="cn.blue.jk.domain.ExtEproduct">
+        UPDATE ext_eproduct_c
+        <set>
+            <if test="exportProductId != null"> EXPORT_PRODUCT_ID=#{exportProductId},</if>
+            <if test="factoryId != null"> FACTORY_ID=#{factoryId},</if>
+            <if test="factoryName != null"> FACTORY_NAME=#{factoryName},</if>
+            <if test="ctype != null"> CTYPE=#{ctype},</if>
+            <if test="productNo != null"> PRODUCT_NO=#{productNo},</if>
+            <if test="productImage != null"> PRODUCT_IMAGE=#{productImage},</if>
+            <if test="productDesc != null"> PRODUCT_DESC=#{productDesc},</if>
+            <if test="cnumber != null"> CNUMBER=#{cnumber},</if>
+            <if test="packingUnit != null"> PACKING_UNIT=#{packingUnit},</if>
+            <if test="price != null"> PRICE=#{price},</if>
+            <if test="amount != null"> AMOUNT=#{amount},</if>
+            <if test="productRequest != null"> PRODUCT_REQUEST=#{productRequest},</if>
+            <if test="orderNo != null"> ORDER_NO=#{orderNo}</if>
+        </set>
+        WHERE EXT_EPRODUCT_ID=#{id}
+    </update>
+
+
+    <insert id="insert" parameterType="cn.blue.jk.domain.ExtEproduct">
+        insert into ext_eproduct_c(
+        EXT_EPRODUCT_ID,EXPORT_PRODUCT_ID,FACTORY_ID,FACTORY_NAME,CTYPE,PRODUCT_NO,PRODUCT_IMAGE,PRODUCT_DESC,
+        CNUMBER,PACKING_UNIT,PRICE,AMOUNT,PRODUCT_REQUEST,ORDER_NO
+        )
+        values(
+        #{id},#{exportProductId},#{factoryId},#{factoryName},#{ctype},#{productNo},#{productImage},#{productDesc},
+        #{cnumber},#{packingUnit},#{price},#{amount},#{productRequest},#{orderNo}
+        )
+    </insert>
+
+    <delete id="deleteBy" parameterType="string">
+        delete from ext_eproduct_c where EXT_EPRODUCT_ID=#{id}
+    </delete>
+
+    <delete id="delete" parameterType="map">
+        delete from ext_eproduct_c WHERE
+        <foreach collection="ids" item="item_id" open="EXT_EPRODUCT_ID in(" close=")" separator=",">
+            #{item_id}
+        </foreach>
+    </delete>
+
+</mapper>

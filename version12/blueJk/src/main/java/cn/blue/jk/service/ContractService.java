@@ -5,7 +5,6 @@ import cn.blue.jk.exception.ServiceException;
 import cn.blue.jk.pagination.Page;
 import cn.blue.jk.vo.ContractVO;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -20,13 +19,13 @@ public interface ContractService {
 
     public void update(Contract contract) throws ServiceException;            //修改，用实体作为参数
 
-    public void deleteById(Serializable id) throws ServiceException;        //按id删除，删除一条；支持整数型和字符串类型ID
+    public void deleteById(String id) throws ServiceException;        //按id删除，删除一条；支持整数型和字符串类型ID
 
-    public void delete(Serializable[] ids) throws ServiceException;            //批量删除；支持整数型和字符串类型ID
+    public void delete(String[] ids) throws ServiceException;            //批量删除；支持整数型和字符串类型ID
 
-    public void submit(Serializable[] ids) throws ServiceException;            //上报
+    public void submit(String[] ids) throws ServiceException;            //上报
 
-    public void cancel(Serializable[] ids) throws ServiceException;            //取消
+    public void cancel(String[] ids) throws ServiceException;            //取消
 
     public ContractVO view(String id)throws ServiceException;
 }

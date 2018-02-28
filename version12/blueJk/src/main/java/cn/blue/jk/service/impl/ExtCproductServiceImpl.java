@@ -12,7 +12,6 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +34,7 @@ public class ExtCproductServiceImpl implements ExtCproductService {
      */
     @Cacheable(cacheNames = {"ExtCproductServiceCache"}, keyGenerator = "keyGenerator")
     @Override
-    public List<SysCode> findSysCode(Serializable parent_id) throws ServiceException {
+    public List<SysCode> findSysCode(String parent_id) throws ServiceException {
         Map<String, Object> map = new HashMap<>();
         if (parent_id == null) parent_id = sysCodeB;
         map.put("parent_id", parent_id);
@@ -56,7 +55,7 @@ public class ExtCproductServiceImpl implements ExtCproductService {
 
     @CacheEvict(cacheNames = {"ExtCproductServiceCache"},keyGenerator = "keyGenerator",allEntries = true)
     @Override
-    public void delete(Serializable... ids) throws ServiceException {
+    public void delete(String... ids) throws ServiceException {
         if (ids.length == 1) {
             extCproductMapper.deleteById(ids[0]);
         } else {
@@ -74,7 +73,7 @@ public class ExtCproductServiceImpl implements ExtCproductService {
 
     @Cacheable(cacheNames = {"ExtCproductServiceCache"}, keyGenerator = "keyGenerator")
     @Override
-    public ExtCproduct get(Serializable id) throws ServiceException {
+    public ExtCproduct get(String id) throws ServiceException {
         return extCproductMapper.get(id);
     }
 }

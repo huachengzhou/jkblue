@@ -11,7 +11,6 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,7 +44,7 @@ public class ContractProductServiceImpl implements ContractProductService {
 
     @Cacheable(cacheNames = {"ContractProductServiceCache"}, keyGenerator = "keyGenerator")
     @Override
-    public ContractProduct get(Serializable id) throws ServiceException {
+    public ContractProduct get(String id) throws ServiceException {
         return contractProductMapper.get(id);
     }
 
@@ -63,18 +62,18 @@ public class ContractProductServiceImpl implements ContractProductService {
 
     @CacheEvict(cacheNames = {"ContractProductServiceCache"}, allEntries = true, keyGenerator = "keyGenerator")
     @Override
-    public void deleteById(Serializable id) throws ServiceException {
+    public void deleteById(String id) throws ServiceException {
         contractProductMapper.deleteById(id);
         contractProductMapper.deleteByExtCproduct((String)id);
     }
 
     @CacheEvict(cacheNames = {"ContractProductServiceCache"}, allEntries = true, keyGenerator = "keyGenerator")
     @Override
-    public void delete(Serializable[] ids) throws ServiceException {
+    public void delete(String[] ids) throws ServiceException {
         Map<String, Object> map = new HashMap<>();
         map.put("ids", ids);
         contractProductMapper.delete(map);
-        for(Serializable id:ids){
+        for(String id:ids){
             contractProductMapper.deleteByExtCproduct((String)id);
         }
     }

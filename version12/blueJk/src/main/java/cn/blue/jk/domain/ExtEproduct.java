@@ -12,13 +12,10 @@ import java.io.Serializable;
  */
 public class ExtEproduct implements Serializable {
     private String id;
-
     private String exportProductId;
     private String factoryId;
-
     private String factoryName;
     private String ctype;
-
     private String productNo;
     private String productImage;
     private String productDesc;

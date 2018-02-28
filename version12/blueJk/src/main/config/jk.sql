@@ -10,9 +10,9 @@ Target Server Type    : MYSQL
 Target Server Version : 50721
 File Encoding         : 65001
 
-Date: 2018-02-25 14:57:48
+Date: 2018-02-28 17:27:51
 */
-/*当前使用的表结构　其中某些表结构有些我把表名修改了以当前的为准*/
+
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
@@ -22,7 +22,7 @@ DROP TABLE IF EXISTS `contract_c`;
 CREATE TABLE `contract_c` (
   `CONTRACT_ID` varchar(90) NOT NULL,
   `OFFEROR` varchar(200) DEFAULT NULL,
-  `CONTRACT_NO` varchar(20) DEFAULT NULL,
+  `CONTRACT_NO` varchar(20) DEFAULT NULL COMMENT '合同号',
   `SIGNING_DATE` datetime DEFAULT NULL,
   `INPUT_BY` varchar(30) DEFAULT NULL,
   `CHECK_BY` varchar(30) DEFAULT NULL,
@@ -90,6 +90,89 @@ CREATE TABLE `contract_product_c` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
+-- Table structure for export_c
+-- ----------------------------
+DROP TABLE IF EXISTS `export_c`;
+CREATE TABLE `export_c` (
+  `EXPORT_ID` varchar(40) NOT NULL COMMENT '主键',
+  `PACKING_LIST_ID` varchar(40) DEFAULT NULL,
+  `CONTRACT_ID` varchar(40) DEFAULT NULL COMMENT '因为分次报运，废除此字段',
+  `INPUT_DATE` datetime DEFAULT NULL COMMENT 'xx时间',
+  `CONTRACT_IDS` varchar(200) DEFAULT NULL COMMENT 'ID集合串\r\n            \r\n            x,y,z',
+  `CUSTOMER_CONTRACT` varchar(200) DEFAULT NULL COMMENT '客户的合同号,可选择多个合同',
+  `LCNO` varchar(10) DEFAULT NULL COMMENT 'L/C T/T 信用证号',
+  `CONSIGNEE` varchar(100) DEFAULT NULL COMMENT '收货人及地址',
+  `MARKS` varchar(1000) DEFAULT NULL COMMENT '唛头',
+  `SHIPMENT_PORT` varchar(100) DEFAULT NULL COMMENT '装运港',
+  `DESTINATION_PORT` varchar(100) DEFAULT NULL,
+  `TRANSPORT_MODE` varchar(10) DEFAULT NULL COMMENT 'SEA/AIR 运输方式',
+  `PRICE_CONDITION` varchar(10) DEFAULT NULL COMMENT 'FBO/CIF 价格条件',
+  `REMARK` varchar(100) DEFAULT NULL,
+  `BOX_NUM` int(11) DEFAULT NULL,
+  `CNUMBER` int(11) DEFAULT NULL,
+  `PACKING_UNIT` varchar(10) DEFAULT NULL COMMENT 'PCS/SETS',
+  `GROSS_WEIGHT` decimal(10,2) DEFAULT NULL COMMENT '毛重',
+  `NET_WEIGHT` decimal(10,2) DEFAULT NULL COMMENT '净重',
+  `SIZE_LENGTH` decimal(10,2) DEFAULT NULL COMMENT '长度',
+  `SIZE_WIDTH` decimal(10,2) DEFAULT NULL COMMENT '宽度',
+  `SIZE_HEIGHT` decimal(10,2) DEFAULT NULL COMMENT '高度/厚度',
+  `CSIZE` decimal(10,2) DEFAULT NULL COMMENT '数量',
+  `AMOUNT` decimal(10,2) DEFAULT NULL COMMENT '自动计算: 数量x单价',
+  `NO_TAX` decimal(10,3) DEFAULT NULL COMMENT '收购单价',
+  `TAX` decimal(10,3) DEFAULT NULL COMMENT '收购单价',
+  `COST_PRICE` decimal(10,2) DEFAULT NULL COMMENT '自动计算=数量x含税/1.17标准值',
+  `COST_TAX` decimal(10,3) DEFAULT NULL COMMENT '自动计算=数量x含税-收购成本金额',
+  `STATE` int(255) DEFAULT NULL COMMENT '0-草稿 1-已上报 2-装箱 3-委托 4-发票 5-财务',
+  `CREATE_BY` varchar(255) DEFAULT NULL COMMENT '报运人',
+  `CREATE_DEPT` varchar(255) DEFAULT NULL COMMENT '报运部门',
+  `CREATE_TIME` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '报运时间',
+  `MEASUREMENT` decimal(10,5) DEFAULT NULL COMMENT '体积',
+  PRIMARY KEY (`EXPORT_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for export_product_c
+-- ----------------------------
+DROP TABLE IF EXISTS `export_product_c`;
+CREATE TABLE `export_product_c` (
+  `EXPORT_PRODUCT_ID` varchar(40) NOT NULL,
+  `CONTRACT_PRODUCT_ID` varchar(40) DEFAULT NULL COMMENT '标识从哪个合同货物而来',
+  `EXPORT_ID` varchar(40) DEFAULT NULL,
+  `FACTORY_ID` varchar(40) DEFAULT NULL,
+  `CONTRACT_ID` varchar(40) DEFAULT NULL,
+  `CONTRACT_NO` varchar(30) DEFAULT NULL,
+  `PRODUCT_NAME` varchar(200) DEFAULT NULL,
+  `PRODUCT_NO` varchar(50) DEFAULT NULL,
+  `PRODUCT_IMAGE` varchar(200) DEFAULT NULL,
+  `PRODUCT_DESC` varchar(600) DEFAULT NULL,
+  `LOADING_RATE` varchar(30) DEFAULT NULL COMMENT 'x/y',
+  `PACKING_UNIT` varchar(50) DEFAULT NULL COMMENT 'PCS/SETS',
+  `CNUMBER` int(11) DEFAULT NULL,
+  `OUT_NUMBER` int(11) DEFAULT NULL,
+  `FINISHED` bit(1) DEFAULT NULL,
+  `GROSS_WEIGHT` decimal(10,2) DEFAULT NULL,
+  `NET_WEIGHT` decimal(10,2) DEFAULT NULL,
+  `SIZE_LENGTH` decimal(10,2) DEFAULT NULL,
+  `SIZE_WIDTH` decimal(10,2) DEFAULT NULL,
+  `SIZE_HEIGHT` decimal(10,2) DEFAULT NULL,
+  `PRODUCT_REQUEST` varchar(2000) DEFAULT NULL,
+  `FACTORY_NAME` varchar(200) DEFAULT NULL,
+  `PRICE` decimal(10,2) DEFAULT NULL,
+  `AMOUNT` decimal(10,2) DEFAULT NULL COMMENT '自动计算: 数量x单价',
+  `CUNIT` varchar(10) DEFAULT NULL,
+  `BOX_NUM` int(11) DEFAULT NULL,
+  `EX_PRICE` decimal(10,2) DEFAULT NULL COMMENT 'sales confirmation 中的价格（手填）',
+  `EX_UNIT` varchar(10) DEFAULT NULL COMMENT '$/￥',
+  `NO_TAX` decimal(10,2) DEFAULT NULL COMMENT '空着,EXCEL手工填',
+  `TAX` decimal(10,2) DEFAULT NULL COMMENT '收购单价=合同单价',
+  `COST_PRICE` decimal(10,2) DEFAULT NULL COMMENT '自动计算=数量x含税/1.17标准值',
+  `COST_TAX` decimal(10,2) DEFAULT NULL COMMENT '自动计算=数量x含税-收购成本金额',
+  `ACCESSORIES` bit(1) DEFAULT NULL,
+  `ORDER_NO` int(11) DEFAULT NULL,
+  PRIMARY KEY (`EXPORT_PRODUCT_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
 -- Table structure for ext_cproduct_c
 -- ----------------------------
 DROP TABLE IF EXISTS `ext_cproduct_c`;
@@ -127,6 +210,28 @@ CREATE TABLE `ext_cproduct_c` (
   `ACCESSORIES` bit(1) DEFAULT NULL,
   `ORDER_NO` int(11) DEFAULT NULL,
   PRIMARY KEY (`EXT_CPRODUCT_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for ext_eproduct_c
+-- ----------------------------
+DROP TABLE IF EXISTS `ext_eproduct_c`;
+CREATE TABLE `ext_eproduct_c` (
+  `EXT_EPRODUCT_ID` varchar(40) NOT NULL,
+  `EXPORT_PRODUCT_ID` varchar(40) CHARACTER SET latin1 DEFAULT NULL,
+  `FACTORY_ID` varchar(40) DEFAULT NULL,
+  `FACTORY_NAME` varchar(200) CHARACTER SET latin1 DEFAULT NULL,
+  `CTYPE` int(11) DEFAULT NULL COMMENT 'SYS_CODE=0104',
+  `PRODUCT_NO` varchar(50) DEFAULT NULL,
+  `PRODUCT_IMAGE` varchar(200) DEFAULT NULL,
+  `PRODUCT_DESC` varchar(600) DEFAULT NULL,
+  `CNUMBER` int(11) DEFAULT NULL,
+  `PACKING_UNIT` varchar(10) DEFAULT NULL COMMENT 'PCS/SETS',
+  `PRICE` decimal(10,2) DEFAULT NULL,
+  `AMOUNT` decimal(10,2) DEFAULT NULL COMMENT '自动计算: 数量x单价',
+  `PRODUCT_REQUEST` varchar(2000) DEFAULT NULL,
+  `ORDER_NO` int(11) DEFAULT NULL,
+  PRIMARY KEY (`EXT_EPRODUCT_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -239,44 +344,6 @@ CREATE TABLE `sys_code_b` (
   `UPDATED_TIME` datetime DEFAULT NULL,
   PRIMARY KEY (`SYS_CODE_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE `export_c` (
-  `EXPORT_ID` varchar(40) NOT NULL COMMENT '主键',
-  `PACKING_LIST_ID` varchar(40) DEFAULT NULL,
-  `CONTRACT_ID` varchar(40) DEFAULT NULL COMMENT '因为分次报运，废除此字段',
-  `INPUT_DATE` datetime DEFAULT NULL COMMENT 'xx时间',
-  `CONTRACT_IDS` varchar(200) DEFAULT NULL COMMENT 'ID集合串\r\n            \r\n            x,y,z',
-  `CUSTOMER_CONTRACT` varchar(200) DEFAULT NULL COMMENT '客户的合同号,可选择多个合同',
-  `LCNO` varchar(10) DEFAULT NULL COMMENT 'L/C T/T 信用证号',
-  `CONSIGNEE` varchar(100) DEFAULT NULL COMMENT '收货人及地址',
-  `MARKS` varchar(1000) DEFAULT NULL COMMENT '唛头',
-  `SHIPMENT_PORT` varchar(100) DEFAULT NULL COMMENT '装运港',
-  `DESTINATION_PORT` varchar(100) DEFAULT NULL,
-  `TRANSPORT_MODE` varchar(10) DEFAULT NULL COMMENT 'SEA/AIR 运输方式',
-  `PRICE_CONDITION` varchar(10) DEFAULT NULL COMMENT 'FBO/CIF 价格条件',
-  `REMARK` varchar(100) DEFAULT NULL,
-  `BOX_NUM` int(11) DEFAULT NULL,
-  `CNUMBER` int(11) DEFAULT NULL,
-  `PACKING_UNIT` varchar(10) DEFAULT NULL COMMENT 'PCS/SETS',
-  `GROSS_WEIGHT` decimal(10,2) DEFAULT NULL COMMENT '毛重',
-  `NET_WEIGHT` decimal(10,2) DEFAULT NULL COMMENT '净重',
-  `SIZE_LENGTH` decimal(10,2) DEFAULT NULL COMMENT '长度',
-  `SIZE_WIDTH` decimal(10,2) DEFAULT NULL COMMENT '宽度',
-  `SIZE_HEIGHT` decimal(10,2) DEFAULT NULL COMMENT '高度/厚度',
-  `CSIZE` decimal(10,2) DEFAULT NULL COMMENT '数量',
-  `AMOUNT` decimal(10,2) DEFAULT NULL COMMENT '自动计算: 数量x单价',
-  `NO_TAX` decimal(10,3) DEFAULT NULL COMMENT '收购单价',
-  `TAX` decimal(10,3) DEFAULT NULL COMMENT '收购单价',
-  `COST_PRICE` decimal(10,2) DEFAULT NULL COMMENT '自动计算=数量x含税/1.17标准值',
-  `COST_TAX` decimal(10,3) DEFAULT NULL COMMENT '自动计算=数量x含税-收购成本金额',
-  `STATE` int(255) DEFAULT NULL COMMENT '0-草稿 1-已上报 2-装箱 3-委托 4-发票 5-财务',
-  `CREATE_BY` varchar(255) DEFAULT NULL COMMENT '报运人',
-  `CREATE_DEPT` varchar(255) DEFAULT NULL COMMENT '报运部门',
-  `CREATE_TIME` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '报运时间',
-  PRIMARY KEY (`EXPORT_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
 
 -- ----------------------------
 -- Table structure for user_role

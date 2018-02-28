@@ -111,29 +111,30 @@
     </select>
 
     <select id="find" resultMap="contractMapA" parameterType="map">
-select c.*,
-  (select count(*) from contract_product_c cpe WHERE cpe.contractId=c.CONTRACT_ID) as cpnum,
+        select c.*,
+        (select count(*) from contract_product_c cpe WHERE cpe.contractId=c.CONTRACT_ID) as cpnum,
 
-  (select count(*) from ext_cproduct_c ecc WHERE ecc.CONTRACT_PRODUCT_ID in(
-    select CONTRACT_PRODUCT_ID from contract_product_c cpc2 WHERE cpc2.contractId=c.CONTRACT_ID
-  )) as extnum,
+        (select count(*) from ext_cproduct_c ecc WHERE ecc.CONTRACT_PRODUCT_ID in(
+        select CONTRACT_PRODUCT_ID from contract_product_c cpc2 WHERE cpc2.contractId=c.CONTRACT_ID
+        )) as extnum,
 
-  ( (select count(*) from contract_product_c cpe WHERE cpe.contractId=c.CONTRACT_ID) *cpc.price) as totalAmount,
+        ( (select count(*) from contract_product_c cpe WHERE cpe.contractId=c.CONTRACT_ID) *cpc.price) as totalAmount,
 
-  cpc.contractId cp_contractId,cpc.CONTRACT_PRODUCT_ID cp_id,cpc.amount cp_amount,cpc.exts cp_exts,cpc.orderNo cp_orderNo,cpc.finished cp_finished,
-  cpc.price cp_price,cpc.packingUnit cp_packingUnit,cpc.boxNum cp_boxNum,cpc.loadingRate cp_loadingRate,cpc.outNumber cp_outNumber,
-  cpc.cnumber cp_cnumber,cpc.productDesc cp_productDesc,cpc.productImage cp_productImage,cpc.productNo cp_productNo,
+        cpc.contractId cp_contractId,cpc.CONTRACT_PRODUCT_ID cp_id,cpc.amount cp_amount,cpc.exts cp_exts,cpc.orderNo cp_orderNo,cpc.finished cp_finished,
+        cpc.price cp_price,cpc.packingUnit cp_packingUnit,cpc.boxNum cp_boxNum,cpc.loadingRate cp_loadingRate,cpc.outNumber cp_outNumber,
+        cpc.cnumber cp_cnumber,cpc.productDesc cp_productDesc,cpc.productImage cp_productImage,cpc.productNo cp_productNo,
 
-  ext.EXT_CPRODUCT_ID e_ext_cproductId,ext.AMOUNT e_amount,ext.ORDER_NO e_orderNo,ext.PRODUCT_REQUEST e_product_request,ext.PRICE e_price,
-  ext.PACKING_UNIT e_packingUnit,ext.CNUMBER e_cnumber,ext.PRODUCT_DESC e_productDesc,ext.PRODUCT_IMAGE e_productImage,
-  ext.PRODUCT_NO e_productNo,ext.CTYPE e_ctype,
+        ext.EXT_CPRODUCT_ID e_ext_cproductId,ext.AMOUNT e_amount,ext.ORDER_NO e_orderNo,ext.PRODUCT_REQUEST e_product_request,ext.PRICE e_price,
+        ext.PACKING_UNIT e_packingUnit,ext.CNUMBER e_cnumber,ext.PRODUCT_DESC e_productDesc,ext.PRODUCT_IMAGE e_productImage,
+        ext.PRODUCT_NO e_productNo,ext.CTYPE e_ctype,
 
-  fc.FACTORY_PRODUCT_ID fc_id,fc.FACTORY_NAME fc_name,fc.FULL_NAME fc_fullName,fc.FACTORY_NAME fc_factoryName,fc.MOBILE fc_mobile,
-  fc.PHONE fc_phone,fc.FAX fc_fax,fc.CNOTE fc_cnote,fc.INSPECTOR fc_inspector,fc.ORDER_NO fc_orderNo,fc.STATE fc_state,
-  fc.CREATE_BY fc_createBy,fc.CREATE_DEPT fc_createDept,fc.CREATE_TIME fc_createTime
+        fc.FACTORY_PRODUCT_ID fc_id,fc.FACTORY_NAME fc_name,fc.FULL_NAME fc_fullName,fc.FACTORY_NAME fc_factoryName,fc.MOBILE fc_mobile,
+        fc.PHONE fc_phone,fc.FAX fc_fax,fc.CNOTE fc_cnote,fc.INSPECTOR fc_inspector,fc.ORDER_NO fc_orderNo,fc.STATE fc_state,
+        fc.CREATE_BY fc_createBy,fc.CREATE_DEPT fc_createDept,fc.CREATE_TIME fc_createTime
 
-from contract_c AS c LEFT JOIN contract_product_c cpc ON cpc.contractId=c.CONTRACT_ID
-  LEFT JOIN ext_cproduct_c ext ON ext.CONTRACT_PRODUCT_ID=cpc.CONTRACT_PRODUCT_ID LEFT JOIN factory_c fc  ON fc.FACTORY_PRODUCT_ID=ext.FACTORY_ID
+        from contract_c AS c LEFT JOIN contract_product_c cpc ON cpc.contractId=c.CONTRACT_ID <if test="state != null">and c.STATE=#{state}</if>
+        LEFT JOIN ext_cproduct_c ext ON ext.CONTRACT_PRODUCT_ID=cpc.CONTRACT_PRODUCT_ID LEFT JOIN factory_c fc  ON fc.FACTORY_PRODUCT_ID=ext.FACTORY_ID
+
     </select>
 
     <insert id="insert" parameterType="cn.blue.jk.domain.Contract">

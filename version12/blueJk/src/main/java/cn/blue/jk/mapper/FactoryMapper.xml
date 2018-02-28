@@ -27,7 +27,7 @@
         <if test="state != null">and STATE=#{state}</if>
     </select>
 
-    <select id="get" parameterType="java.io.Serializable" resultMap="factoryRM" useCache="true" flushCache="true">
+    <select id="get" parameterType="string" resultMap="factoryRM" useCache="true" flushCache="true">
         SELECT * from factory_c where FACTORY_PRODUCT_ID=#{id}
     </select>
 

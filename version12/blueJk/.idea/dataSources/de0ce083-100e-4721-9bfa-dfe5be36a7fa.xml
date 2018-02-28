@@ -1449,7 +1449,7 @@
       <ColumnKind>normal</ColumnKind>
       <OnUpdate>CURRENT_TIMESTAMP</OnUpdate>
     </column>
-    <column id="332" parent="228" name="measurement">
+    <column id="332" parent="228" name="MEASUREMENT">
       <Position>33</Position>
       <Comment>体积</Comment>
       <DataType>decimal(10,5)|0</DataType>

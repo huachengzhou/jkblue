@@ -13,7 +13,6 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,7 +56,7 @@ public class ContractServiceImpl implements ContractService {
 
     @CacheEvict(cacheNames = {"ContractServiceCache"}, allEntries = true, keyGenerator = "keyGenerator")
     @Override
-    public void deleteById(Serializable id) throws ServiceException {
+    public void deleteById(String id) throws ServiceException {
         contractMapper.deleteById(id);
         String s = (String) id;
         contractMapper.deleteByExtCproduct(s);
@@ -66,11 +65,11 @@ public class ContractServiceImpl implements ContractService {
 
     @CacheEvict(cacheNames = {"ContractServiceCache"}, allEntries = true, keyGenerator = "keyGenerator")
     @Override
-    public void delete(Serializable[] ids) throws ServiceException {
+    public void delete(String[] ids) throws ServiceException {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("ids", ids);
         contractMapper.delete(map);
-        for(Serializable s:ids){
+        for(String s:ids){
             String id = (String)s;
             contractMapper.deleteByExtCproduct(id);
             contractMapper.deleteByContractProduct(id);
@@ -79,7 +78,7 @@ public class ContractServiceImpl implements ContractService {
 
     @CacheEvict(cacheNames = {"ContractServiceCache"}, allEntries = true, keyGenerator = "keyGenerator")
     @Override
-    public void submit(Serializable[] ids) throws ServiceException {
+    public void submit(String[] ids) throws ServiceException {
         String state = ContractEnum.CONTRACT_ENUM_submit.getVar();
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("ids", ids);
@@ -89,7 +88,7 @@ public class ContractServiceImpl implements ContractService {
 
     @CacheEvict(cacheNames = {"ContractServiceCache"}, allEntries = true, keyGenerator = "keyGenerator")
     @Override
-    public void cancel(Serializable[] ids) throws ServiceException {
+    public void cancel(String[] ids) throws ServiceException {
         String state = ContractEnum.CONTRACT_ENUM_cancel.getVar();
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("ids", ids);

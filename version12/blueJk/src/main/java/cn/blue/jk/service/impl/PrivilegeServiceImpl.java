@@ -9,7 +9,6 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +27,7 @@ public class PrivilegeServiceImpl implements PrivilegeService {
 
     @Cacheable(cacheNames = {"PrivilegeServiceCache"}, keyGenerator = "keyGenerator")
     @Override
-    public Privilege get(Serializable id) throws ServiceException {
+    public Privilege get(String id) throws ServiceException {
         return privilegeMapper.get(id);
     }
 
@@ -46,13 +45,13 @@ public class PrivilegeServiceImpl implements PrivilegeService {
 
     @Cacheable(cacheNames = {"PrivilegeServiceCache"}, keyGenerator = "keyGenerator")
     @Override
-    public void deleteById(Serializable id) throws ServiceException {
+    public void deleteById(String id) throws ServiceException {
         privilegeMapper.deleteById(id);
     }
 
     @Cacheable(cacheNames = {"PrivilegeServiceCache"}, keyGenerator = "keyGenerator")
     @Override
-    public void delete(Serializable... ids) throws ServiceException {
+    public void delete(String... ids) throws ServiceException {
         Map<String, Object> map = new HashMap<>();
         map.put("ids", ids);
         privilegeMapper.delete(map);

@@ -10,7 +10,6 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +30,7 @@ public class UserServiceImpl implements UserService {
 
     @Cacheable(cacheNames = {"UserServiceCache"}, keyGenerator = "keyGenerator")
     @Override
-    public User get(Serializable id) throws ServiceException {
+    public User get(String id) throws ServiceException {
         return userMapper.get(id);
     }
 
@@ -51,7 +50,7 @@ public class UserServiceImpl implements UserService {
     @Cacheable(cacheNames = {"UserServiceCache"}, keyGenerator = "keyGenerator")
     @Override
     public void update(User user, String... rids) throws ServiceException {
-        Serializable[] uids = {user.getUid()};
+        String[] uids = {user.getUid()};
         Map<String, Object> map = new HashMap<>();
         map.put("ids", uids);
         userMapper.deleteUser_Role(map);
@@ -71,7 +70,7 @@ public class UserServiceImpl implements UserService {
 
     @Cacheable(cacheNames = {"UserServiceCache"}, keyGenerator = "keyGenerator")
     @Override
-    public void delete(Serializable... ids) throws ServiceException {
+    public void delete(String... ids) throws ServiceException {
         Map<String, Object> map = new HashMap<>();
         map.put("ids", ids);
         userMapper.delete(map);

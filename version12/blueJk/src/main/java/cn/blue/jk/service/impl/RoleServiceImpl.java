@@ -9,7 +9,6 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +28,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Cacheable(cacheNames = {"RoleServiceCache"}, keyGenerator = "keyGenerator")
     @Override
-    public Role get(Serializable id) throws ServiceException {
+    public Role get(String id) throws ServiceException {
         return roleMapper.get(id);
     }
 
@@ -57,7 +56,7 @@ public class RoleServiceImpl implements RoleService {
     @Cacheable(cacheNames = {"RoleServiceCache"}, keyGenerator = "keyGenerator")
     @Override
     public void update(Role entity, String... pids) throws ServiceException {
-        Serializable[] rids = {entity.getRid()};
+        String[] rids = {entity.getRid()};
         Map<String, Object> map = new HashMap<>();
         map.put("ids", rids);
         roleMapper.deletePrivilege_role(map);
@@ -77,7 +76,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Cacheable(cacheNames = {"RoleServiceCache"}, keyGenerator = "keyGenerator")
     @Override
-    public void delete(Serializable... ids) throws ServiceException {
+    public void delete(String... ids) throws ServiceException {
         Map<String, Object> map = new HashMap<>();
         map.put("ids", ids);
         roleMapper.delete(map);
