@@ -6,6 +6,7 @@ import cn.blue.jk.exception.ServiceException;
 import cn.blue.jk.mapper.ExtEproductMapper;
 import cn.blue.jk.service.ExtEproductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
@@ -20,11 +21,13 @@ public class ExtEproductServiceImpl implements ExtEproductService {
     @Autowired
     private ExtEproductMapper mapper;
 
+    @Cacheable(cacheNames = {"extEproductServiceCache"}, keyGenerator = "keyGenerator")
     @Override
     public List<ExtEproduct> find(Map<String, Object> map) throws ServiceException {
         return mapper.find(map);
     }
 
+    @Cacheable(cacheNames = {"extEproductServiceCache"}, keyGenerator = "keyGenerator")
     @Override
     public ExtEproduct get(String id) throws ServiceException {
         return mapper.get(id);

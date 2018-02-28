@@ -17,6 +17,7 @@ import cn.blue.jk.vo.ContractVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
@@ -46,11 +47,13 @@ public class ExportServiceImpl implements ExportService {
     @Autowired
     private ExtEproductMapper extEproductMapper;
 
+    @Cacheable(cacheNames = {"exportServiceCache"}, keyGenerator = "keyGenerator")
     @Override
     public List<Export> find(Map<String, Object> map) throws ServiceException {
         return exportMapper.find(map);
     }
 
+    @Cacheable(cacheNames = {"exportServiceCache"}, keyGenerator = "keyGenerator")
     @Override
     public List<ContractVO> getContractList() throws ServiceException {
         String state = ExportEnum.EXPORT_ENUM_END.getVar();
@@ -59,6 +62,7 @@ public class ExportServiceImpl implements ExportService {
         return contractMapper.find(map);
     }
 
+    @Cacheable(cacheNames = {"exportServiceCache"}, keyGenerator = "keyGenerator")
     @Override
     public String getMrecordData(String id) throws ServiceException {
         Map paraMap = new HashMap();
@@ -97,6 +101,7 @@ public class ExportServiceImpl implements ExportService {
         }
     }
 
+    @Cacheable(cacheNames = {"exportServiceCache"}, keyGenerator = "keyGenerator")
     @Override
     public Export get(String id) throws ServiceException {
         return exportMapper.get(id);

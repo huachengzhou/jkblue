@@ -6,6 +6,7 @@ import cn.blue.jk.exception.ServiceException;
 import cn.blue.jk.mapper.ExportProductMapper;
 import cn.blue.jk.service.ExportProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
@@ -20,11 +21,13 @@ public class ExportProductServiceImpl implements ExportProductService {
     @Autowired
     private ExportProductMapper mapper;
 
+    @Cacheable(cacheNames = {"exportProductServiceCache"}, keyGenerator = "keyGenerator")
     @Override
     public List<ExportProduct> find(Map<String, Object> map) throws ServiceException {
         return mapper.find(map);
     }
 
+    @Cacheable(cacheNames = {"exportProductServiceCache"}, keyGenerator = "keyGenerator")
     @Override
     public ExportProduct get(String id) throws ServiceException {
         return mapper.get(id);

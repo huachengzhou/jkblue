@@ -1,4 +1,5 @@
-﻿prompt PL/SQL Developer import file
+﻿/*参考表结构*/
+prompt PL/SQL Developer import file
 prompt Created on 2014年10月21日 by Administrator
 set feedback off
 set define off

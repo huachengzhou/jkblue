@@ -30,7 +30,7 @@
 
      以上时间值都是以秒作为单位的
      -->
-    <cache name="factoryS"
+    <cache name="factoryServiceCache"
            maxElementsInMemory="10000"
            eternal="false"
            overflowToDisk="true"
@@ -51,52 +51,85 @@
            timeToIdleSeconds="300"
            timeToLiveSeconds="600"
            memoryStoreEvictionPolicy="LRU"/>
-    <cache name="testCache"
+    <cache name="UserServiceCache"
+           maxElementsInMemory="10000"
            eternal="false"
-           maxElementsInMemory="100"
-           overflowToDisk="false"
-           diskPersistent="false"
-           timeToIdleSeconds="0"
-           timeToLiveSeconds="300"
+           overflowToDisk="true"
+           timeToIdleSeconds="300"
+           timeToLiveSeconds="600"
+           memoryStoreEvictionPolicy="LRU"/>
+    <cache name="RoleServiceCache"
+           maxElementsInMemory="10000"
+           eternal="false"
+           overflowToDisk="true"
+           timeToIdleSeconds="300"
+           timeToLiveSeconds="600"
+           memoryStoreEvictionPolicy="LRU"/>
+    <cache name="PrivilegeServiceCache"
+           maxElementsInMemory="10000"
+           eternal="false"
+           overflowToDisk="true"
+           timeToIdleSeconds="300"
+           timeToLiveSeconds="600"
+           memoryStoreEvictionPolicy="LRU"/>
+    <cache name="ExtCproductServiceCache"
+           maxElementsInMemory="10000"
+           eternal="false"
+           overflowToDisk="true"
+           timeToIdleSeconds="300"
+           timeToLiveSeconds="600"
+           memoryStoreEvictionPolicy="LRU"/>
+    <cache name="exportProductServiceCache"
+           maxElementsInMemory="10000"
+           eternal="false"
+           overflowToDisk="true"
+           timeToIdleSeconds="300"
+           timeToLiveSeconds="600"
+           memoryStoreEvictionPolicy="LRU"/>
+    <cache name="exportServiceCache"
+           maxElementsInMemory="10000"
+           eternal="false"
+           overflowToDisk="true"
+           timeToIdleSeconds="300"
+           timeToLiveSeconds="600"
+           memoryStoreEvictionPolicy="LRU"/>
+    <cache name="extEproductServiceCache"
+           maxElementsInMemory="10000"
+           eternal="false"
+           overflowToDisk="true"
+           timeToIdleSeconds="300"
+           timeToLiveSeconds="600"
+           memoryStoreEvictionPolicy="LRU"/>
+    <cache name="outProductServiceCache"
+           maxElementsInMemory="10000"
+           eternal="false"
+           overflowToDisk="true"
+           timeToIdleSeconds="300"
+           timeToLiveSeconds="600"
            memoryStoreEvictionPolicy="LRU"/>
 
     <!-- shiro缓存 -->
-    <cache name="sampleCache1"
+    <cache name="authorizationshiroRealmA"
            maxElementsInMemory="10000"
            eternal="false"
+           overflowToDisk="true"
            timeToIdleSeconds="300"
            timeToLiveSeconds="600"
+           memoryStoreEvictionPolicy="LRU"/>
+
+    <cache name="authorizationshiroRealmB"
+           maxElementsInMemory="10000"
+           eternal="false"
            overflowToDisk="true"
-    />
-    <cache name="sampleCache2"
-           maxElementsInMemory="1000"
-           eternal="true"
-           timeToIdleSeconds="0"
-           timeToLiveSeconds="0"
-           overflowToDisk="false"
-    />
-    <cache name="authorizationCacheShiroB"
+           timeToIdleSeconds="300"
+           timeToLiveSeconds="600"
+           memoryStoreEvictionPolicy="LRU"/>
+
+    <cache name="shiro_activeSessionCache"
+           maxElementsInMemory="10000"
            eternal="false"
-           maxElementsInMemory="1000"
-           timeToIdleSeconds="3600"
-           timeToLiveSeconds="0"
-           overflowToDisk="false"
-           statistics="true">
-    </cache>
-    <cache name="authenticationCacheShiroRealmC"
-           eternal="false"
-           maxElementsInMemory="1000"
-           timeToIdleSeconds="3600"
-           timeToLiveSeconds="0"
-           overflowToDisk="false"
-           statistics="true">
-    </cache>
-    <cache name="shiro-activeSessionCache"
-           eternal="false"
-           maxElementsInMemory="1000"
-           timeToIdleSeconds="3600"
-           timeToLiveSeconds="0"
-           overflowToDisk="false"
-           statistics="true">
-    </cache>
+           overflowToDisk="true"
+           timeToIdleSeconds="300"
+           timeToLiveSeconds="600"
+           memoryStoreEvictionPolicy="LRU"/>
 </ehcache>
