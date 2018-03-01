@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.blue.jk.mapper.ExportProductMapper">
+    <!-- 开启本mapper的缓存  mybatis默认实现PerpetualCache 假如要和 ehcache实现类 cache type 修改为此 -->
+    <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>
+
+    <resultMap id="RM" type="cn.blue.jk.domain.ExportProduct">
+
+        <id column="EXPORT_PRODUCT_ID" property="id"/>
+        <result column="FACTORY_ID" property="factoryId"/>
+        <result column="FACTORY_NAME" property="factoryName"/>
+        <result column="EXPORT_ID" property="exportId"/>
+        <result column="PRODUCT_NO" property="productNo"/>
+        <result column="CNUMBER" property="cnumber"/>
+        <result column="PACKING_UNIT" property="packingUnit"/>
+        <result column="PRICE" property="price"/>
+        <result column="BOX_NUM" property="boxNum"/>
+        <result column="GROSS_WEIGHT" property="grossWeight"/>
+        <result column="NET_WEIGHT" property="netWeight"/>
+        <result column="SIZE_LENGTH" property="sizeLength"/>
+        <result column="SIZE_WIDTH" property="sizeWidth"/>
+        <result column="SIZE_HEIGHT" property="sizeHeight"/>
+        <result column="EX_PRICE" property="exPrice"/>
+        <result column="TAX" property="tax"/>
+        <result column="ORDER_NO" property="orderNo"/>
+    </resultMap>
+    <select id="find" parameterType="map" resultMap="RM">
+       SELECT epe.EXPORT_ID,epe.CONTRACT_ID,epe.CONTRACT_PRODUCT_ID,epe.NO_TAX,epe.NET_WEIGHT,epe.COST_TAX,
+  epe.COST_PRICE,epe.GROSS_WEIGHT,epe.CNUMBER,epe.SIZE_HEIGHT,epe.SIZE_LENGTH,epe.SIZE_WIDTH,
+  epe.TAX,epe.BOX_NUM,epe.AMOUNT,epe.PACKING_UNIT,epe.CONTRACT_NO,epe.ORDER_NO,epe.FACTORY_NAME,
+  epe.FACTORY_ID,epe.PRODUCT_NO,epe.PRODUCT_IMAGE,epe.PRODUCT_DESC,epe.PRICE,epe.PRODUCT_REQUEST,
+  epe.ACCESSORIES,epe.CUNIT,epe.EX_PRICE,epe.EXPORT_ID,epe.EXPORT_PRODUCT_ID,epe.EX_UNIT,epe.FINISHED
+from export_product_c epe
+    <where>1=1
+      <if test="exportId != null">and epe.EXPORT_ID=#{exportId}</if>
+    </where>
+    </select>
+
+    <select id="get" parameterType="string" resultMap="RM" useCache="true" flushCache="true">
+        SELECT epe.EXPORT_ID,epe.CONTRACT_ID,epe.CONTRACT_PRODUCT_ID,epe.NO_TAX,epe.NET_WEIGHT,epe.COST_TAX,
+  epe.COST_PRICE,epe.GROSS_WEIGHT,epe.CNUMBER,epe.SIZE_HEIGHT,epe.SIZE_LENGTH,epe.SIZE_WIDTH,
+  epe.TAX,epe.BOX_NUM,epe.AMOUNT,epe.PACKING_UNIT,epe.CONTRACT_NO,epe.ORDER_NO,epe.FACTORY_NAME,
+  epe.FACTORY_ID,epe.PRODUCT_NO,epe.PRODUCT_IMAGE,epe.PRODUCT_DESC,epe.PRICE,epe.PRODUCT_REQUEST,
+  epe.ACCESSORIES,epe.CUNIT,epe.EX_PRICE,epe.EXPORT_ID,epe.EXPORT_PRODUCT_ID,epe.EX_UNIT,epe.FINISHED
+from export_product_c epe where 1=1 AND EXPORT_PRODUCT_ID=#{id}
+    </select>
+
+    <insert id="insert" parameterType="cn.blue.jk.domain.ExportProduct">
+        insert into export_product_c(EXPORT_PRODUCT_ID,EXPORT_ID,FACTORY_ID,FACTORY_NAME,PRODUCT_NO,CNUMBER,PACKING_UNIT,PRICE,BOX_NUM,GROSS_WEIGHT,NET_WEIGHT,SIZE_LENGTH,SIZE_WIDTH,SIZE_HEIGHT,EX_PRICE,TAX,ORDER_NO)
+        values(
+#{id},#{exportId},#{factoryId},#{factoryName},#{productNo},#{cnumber},#{packingUnit},#{price},#{boxNum},#{grossWeight},#{netWeight},#{sizeLength},#{sizeWidth},#{sizeHeight},#{exPrice},#{tax},#{orderNo}
+        )
+    </insert>
+
+    <update id="update" parameterType="cn.blue.jk.domain.ExportProduct">
+        update export_product_c
+        <set>
+    <if test="exportId != null ">EXPORT_ID=#{exportId},</if>
+    <if test="factoryId != null ">FACTORY_ID=#{factoryId},</if>
+    <if test="factoryName != null ">FACTORY_NAME=#{factoryName},</if>
+    <if test="productNo != null ">PRODUCT_NO=#{productNo},</if>
+    <if test="cnumber != null ">CNUMBER=#{cnumber},</if>
+    <if test="packingUnit != null ">PACKING_UNIT=#{packingUnit},</if>
+    <if test="price != null ">PRICE=#{price},</if>
+    <if test="boxNum != null ">BOX_NUM=#{boxNum},</if>
+    <if test="grossWeight != null ">GROSS_WEIGHT=#{grossWeight},</if>
+    <if test="netWeight != null ">NET_WEIGHT=#{netWeight},</if>
+    <if test="sizeLength != null ">SIZE_LENGTH=#{sizeLength},</if>
+    <if test="sizeWidth != null ">SIZE_WIDTH=#{sizeWidth},</if>
+    <if test="sizeHeight != null ">SIZE_HEIGHT=#{sizeHeight},</if>
+    <if test="exPrice != null ">EX_PRICE=#{exPrice},</if>
+    <if test="tax != null ">TAX=#{tax},</if>
+    <if test="orderNo != null ">ORDER_NO=#{orderNo},</if>
+        </set>
+        where EXPORT_PRODUCT_ID=#{id}
+    </update>
+
+
+
+    <delete id="deleteBy" parameterType="string">
+        delete from export_product_c where EXPORT_PRODUCT_ID=#{id}
+    </delete>
+
+    <delete id="delete" parameterType="string">
+        delete from export_product_c WHERE
+         <foreach collection="ids" item="item_id" open="EXPORT_PRODUCT_ID in(" close=")" separator=",">
+            #{item_id}
+         </foreach>
+    </delete>
+
+
+</mapper>

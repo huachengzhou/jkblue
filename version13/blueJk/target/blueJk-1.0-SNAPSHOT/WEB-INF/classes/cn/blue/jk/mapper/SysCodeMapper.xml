@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.blue.jk.mapper.SysCodeMapper">
+    <!-- 开启本mapper的缓存  mybatis默认实现PerpetualCache 假如要和 ehcache实现类 cache type 修改为此 -->
+    <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>
+
+    <resultMap id="SysCodeMap" type="cn.blue.jk.domain.SysCode">
+        <id column="SYS_CODE_ID" property="id" />
+        <result column="ORDER_NO" property="orderNo" />
+        <result column="NAME" property="name" />
+    </resultMap>
+    <select id="find" parameterType="map" resultMap="SysCodeMap">
+        select  s.SYS_CODE_ID,s.NAME,s.ORDER_NO  from sys_code_b s where 1=1
+        <if test="parent_id != null">and PARENT_ID=#{parent_id}</if>
+    </select>
+
+
+
+</mapper>

@@ -1,0 +1,3 @@
+java.lang.NullPointerException ContractController.printUtil(ContractController.java:199)
+看到有空指针异常之后　就用异常包起来
+然后一下在就知道了

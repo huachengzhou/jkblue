@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.blue.jk.mapper.PackingListMapper">
+
+    <resultMap id="domainMap" type="cn.blue.jk.domain.PackingList">
+        <id property="id" column="PACKING_LIST_ID" />
+        <result property="exportProductId" column="EXPORT_PRODUCT_ID" />
+        <result property="seller" column="SELLER" />
+        <result property="buyer" column="BUYER" />
+        <result property="invoiceNo" column="INVOICE_NO" />
+        <result property="invoiceDate" column="INVOICE_DATE" />
+        <result property="marks" column="MARKS" />
+        <result property="descriptions" column="DESCRIPTIONS" />
+        <result property="exportIds" column="EXPORT_IDS" />
+        <result property="exportNos" column="EXPORT_NOS" />
+        <result property="state" column="STATE" />
+        <result property="createBy" column="CREATE_BY" />
+        <result property="createDept" column="CREATE_DEPT" />
+        <result property="createTime" column="CREATE_TIME" />
+    </resultMap>
+
+	<select id="find" parameterType="map" resultMap="domainMap">
+select p.PACKING_LIST_ID,p.MARKS,p.CREATE_BY,p.CREATE_DEPT,p.CREATE_TIME,
+  p.BUYER,p.DESCRIPTIONS,p.EXPORT_IDS,p.EXPORT_NOS,p.INVOICE_DATE,p.INVOICE_NO,p.SELLER,p.STATE
+from packing_list_c p where 1=1
+  <if test="state != null">and STATE=#{state}</if>
+	</select>
+
+    <select id="get" parameterType="string" resultMap="domainMap">
+select p.PACKING_LIST_ID,p.MARKS,p.CREATE_BY,p.CREATE_DEPT,p.CREATE_TIME,
+  p.BUYER,p.DESCRIPTIONS,p.EXPORT_IDS,p.EXPORT_NOS,p.INVOICE_DATE,p.INVOICE_NO,p.SELLER,p.STATE
+from packing_list_c p where 1=1 and
+p.PACKING_LIST_ID=#{id}
+    </select>
+
+    <update id="update" parameterType="cn.blue.jk.domain.PackingList">
+        UPDATE packing_list_c
+        <set>
+            <if test="seller != null">         SELLER=#{seller},</if>
+            <if test="buyer != null">         BUYER=#{buyer},</if>
+            <if test="invoiceNo != null">         INVOICE_NO=#{invoiceNo},</if>
+            <if test="invoiceDate != null">         INVOICE_DATE=#{invoiceDate},</if>
+            <if test="marks != null">         MARKS=#{marks},</if>
+            <if test="descriptions != null">         DESCRIPTIONS=#{descriptions},</if>
+
+            <if test="exportIds != null">         EXPORT_IDS=#{exportIds},</if>
+            <if test="exportNos != null">        EXPORT_NOS=#{exportNos},</if>
+
+            <if test="state != null">         STATE=#{state},</if>
+
+            <if test="createBy != null">         CREATE_BY=#{createBy},</if>
+            <if test="createDept != null">         CREATE_DEPT=#{createDept},</if>
+            <if test="createTime != null">         CREATE_TIME=#{createTime}</if>
+        </set>
+        WHERE PACKING_LIST_ID=#{id}
+    </update>
+
+    <update id="moreUpdate" parameterType="map">
+         UPDATE packing_list_c <set><if test="state != null">STATE=#{state}</if></set>
+        <foreach collection="ids" item="item_id" open=" where PACKING_LIST_ID in(" close=")" separator=",">
+            #{item_id}
+        </foreach>
+    </update>
+
+
+    <insert id="insert" parameterType="cn.blue.jk.domain.PackingList">
+        insert into packing_list_c(
+        PACKING_LIST_ID,SELLER,BUYER,INVOICE_NO,INVOICE_DATE,MARKS,DESCRIPTIONS,EXPORT_IDS,
+        EXPORT_NOS,STATE,CREATE_BY,CREATE_DEPT,CREATE_TIME
+        )
+        values(
+        #{id},#{seller},#{buyer},#{invoiceNo},#{invoiceDate},#{marks},#{descriptions},#{exportIds},
+        #{exportNos},#{state},#{createBy},#{createDept},#{createTime}
+        )
+    </insert>
+
+    <delete id="deleteBy" parameterType="string">
+        delete from packing_list_c where PACKING_LIST_ID=#{id}
+    </delete>
+
+    <delete id="delete" parameterType="map">
+        delete from packing_list_c WHERE
+        <foreach collection="ids" item="item_id" open="PACKING_LIST_ID in(" close=")" separator=",">
+            #{item_id}
+        </foreach>
+    </delete>
+
+</mapper>
