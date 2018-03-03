@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.blue.jk.mapper.ContractProductMapper">
+    <!-- 开启本mapper的缓存  mybatis默认实现PerpetualCache 假如要和 ehcache实现类 cache type 修改为此 -->
+    <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>
+
+    <update id="update" parameterType="cn.blue.jk.domain.ContractProduct">
+        update contract_product_c
+        <set>
+            <if test="contractId != null">contractId=#{contractId},</if>
+            <if test="factoryId != null">factoryId=#{factoryId},</if>
+            <if test="factoryName != null">factoryName=#{factoryName},</if>
+            <if test="productNo != null">productNo=#{productNo},</if>
+            <if test="productImage != null">productImage=#{productImage},</if>
+            <if test="productDesc != null">productDesc=#{productDesc},</if>
+            <if test="cnumber != null">cnumber=#{cnumber},</if>
+            <if test="outNumber != null">outNumber=#{outNumber},</if>
+            <if test="loadingRate != null">loadingRate=#{loadingRate},</if>
+            <if test="boxNum != null">boxNum=#{boxNum},</if>
+            <if test="packingUnit != null">packingUnit=#{packingUnit},</if>
+            <if test="price != null">price=#{price},</if>
+            <if test="amount != null">amount=#{amount},</if>
+            <if test="finished != null">finished=#{finished},</if>
+            <if test="exts != null">exts=#{exts},</if>
+            <if test="orderNo != null">orderNo=#{orderNo}</if>
+        </set>
+        where CONTRACT_PRODUCT_ID=#{id}
+    </update>
+
+    <resultMap id="contractProductMap" type="cn.blue.jk.domain.ContractProduct">
+        <id column="CONTRACT_PRODUCT_ID" property="id" />
+        <result property="contractId" column="contractId" />
+        <result property="factoryId" column="factoryId" />
+        <result property="factoryName" column="factoryName" />
+        <result property="productNo" column="productNo" />
+        <result property="productImage" column="productImage" />
+        <result property="productDesc" column="productDesc" />
+        <result property="cnumber" column="cnumber" />
+        <result property="outNumber" column="outNumber" />
+        <result property="loadingRate" column="loadingRate" />
+        <result property="boxNum" column="boxNum" />
+        <result property="packingUnit" column="packingUnit" />
+        <result property="price" column="price" />
+        <result property="amount" column="amount" />
+        <result property="finished" column="finished" />
+        <result property="exts" column="exts" />
+        <result property="orderNo" column="orderNo" />
+    </resultMap>
+    <select id="get" parameterType="string" resultMap="contractProductMap">
+        select * from contract_product_c where CONTRACT_PRODUCT_ID=#{id}
+    </select>
+
+    <select id="find" parameterType="map" resultMap="contractProductMap">
+        select * from contract_product_c where 1=1
+        <if test="contractId != null">and contractId=#{contractId}</if>
+    </select>
+
+    <insert id="insert" parameterType="cn.blue.jk.domain.ContractProduct">
+        insert into contract_product_c(CONTRACT_PRODUCT_ID,contractId,factoryId,factoryName,productNo,productImage,productDesc,cnumber,outNumber,loadingRate,boxNum,
+        packingUnit,price,amount,finished,exts,orderNo) values(#{id},#{contractId},#{factoryId},#{factoryName},#{productNo},#{productImage},#{productDesc},#{cnumber},#{outNumber},
+        #{loadingRate},#{boxNum},#{packingUnit},#{price},#{amount},#{finished},#{exts},#{orderNo})
+    </insert>
+
+    <delete id="deleteById" parameterType="string">
+        delete from contract_product_c where CONTRACT_PRODUCT_ID=#{id}
+    </delete>
+
+    <delete id="delete" parameterType="map">
+        delete from contract_product_c
+        <foreach collection="ids" item="item_ID" open="where CONTRACT_PRODUCT_ID in(" close=")" separator=",">
+            #{item_ID}
+        </foreach>
+    </delete>
+    <!-- 级联删除 -->
+    <delete id="deleteByExtCproduct" parameterType="string">
+        delete from ext_cproduct_c  WHERE CONTRACT_PRODUCT_ID=#{id}
+    </delete>
+
+
+
+</mapper>
