@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.blue.jk.mapper.OutProductMapper">
+    <!-- 开启本mapper的缓存  mybatis默认实现PerpetualCache 假如要和 ehcache实现类 cache type 修改为此 -->
+    <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>
+
+    <select id="find" parameterType="map" resultType="cn.blue.jk.vo.OutProductVO">
+select c.CUSTOM_NAME customName,c.CONTRACT_NO contractNo,c.DELIVERY_PERIOD deliveryPeriod,c.SHIP_TIME shipTime,c.TRADE_TERMS tradeTerms,
+cpc.factoryName as factoryName,cpc.cnumber as cnumber,cpc.productNo as productNo
+from
+(select CONTRACT_ID,CUSTOM_NAME,CONTRACT_NO,DELIVERY_PERIOD,SHIP_TIME,TRADE_TERMS from contract_c) c
+LEFT JOIN
+(select contractId,productNo,cnumber,packingUnit,factoryName from contract_product_c) cpc
+on c.CONTRACT_ID=cpc.contractId
+    <if test="id != null"><where>c.SHIP_TIME like #{id}</where></if>
+    </select>
+</mapper>

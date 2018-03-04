@@ -15,7 +15,7 @@ public class Factory implements Serializable {
     private String id;    //将主键都映射成id
     private String fullName;
     private String factoryName;
-    private String contacts;
+    private String contacts;//CONTACTS
     private String phone;
     private String mobile;
     private String fax;
