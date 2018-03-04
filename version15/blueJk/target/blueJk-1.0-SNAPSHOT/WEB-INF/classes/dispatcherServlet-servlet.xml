@@ -8,8 +8,7 @@
 		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd">
     <context:component-scan base-package="cn.blue.jk.controller">
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
-        <context:include-filter type="annotation"
-                                expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
+        <context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
     </context:component-scan>
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" id="resolver">
@@ -51,8 +50,18 @@
     <mvc:interceptors>
         <!-- 日志拦截器 -->
         <mvc:interceptor>
-            <mvc:mapping path="/*/*"/>
+            <mvc:mapping path="/*"/>
             <bean class="cn.blue.jk.ince.LoggerHandlerInterceptor" />
         </mvc:interceptor>
     </mvc:interceptors>
+    <!-- 异常处理 统一 异常处理  -->
+    <bean class="cn.blue.jk.ince.DefaultExceptionHandler" />
+    <bean id="simpleMappingExceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <property name="exceptionMappings">
+            <props>
+                <prop key="java.lang.ArrayIndexOutOfBoundsException">pages/sys/exception/500.jsp</prop>
+                <prop key="java.lang.Exception">pages/sys/exception/500.jsp</prop>
+            </props>
+        </property>
+    </bean>
 </beans>

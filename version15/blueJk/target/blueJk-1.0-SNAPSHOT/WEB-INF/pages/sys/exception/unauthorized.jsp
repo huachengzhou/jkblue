@@ -19,7 +19,7 @@
 	</center>
 	<hr>
 	<center>
-		<a href="/fmain.action">main</a>
+		<label style="color: #b92c28">没有相关的权限</label>
 	</center>
 </body>
 </html>

@@ -70,7 +70,7 @@ public class ExportController {
     @RequestMapping(value = "/cargo/export/toview.action")
     public String toView(@RequestParam(value = "id") String id) throws ControllerException {
         logger.info("/cargo/export/toview.action" + id);
-        return "";
+        throw new ControllerException();
     }
 
     /**

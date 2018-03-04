@@ -1,7 +1,12 @@
 package cn.blue.jk.ince;
 
 import cn.blue.common.view.VIEW;
+import cn.blue.jk.exception.ControllerException;
+import cn.blue.jk.exception.MapperException;
+import cn.blue.jk.exception.ServiceException;
 import org.apache.shiro.authz.UnauthorizedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.ConversionNotSupportedException;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.http.HttpStatus;
@@ -20,11 +25,15 @@ import org.springframework.web.servlet.mvc.multiaction.NoSuchRequestHandlingMeth
 
 @ControllerAdvice
 public class DefaultExceptionHandler {
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
+
     private final String pathA = VIEW.Pages.getVar() + "sys/";
+
     @ExceptionHandler({UnauthorizedException.class})
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public String processUnauthenticatedException(NativeWebRequest request, UnauthorizedException e, Model model) {
         model.addAttribute("exception", "shiro exception:" + e.getMessage());
+        log.info("shiro exception"+e.getMessage());
         return pathA+"exception/unauthorized.jsp";
     }
 
@@ -32,6 +41,7 @@ public class DefaultExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)//server code 500
     public String conversionNotSupportedExceptionEx(HttpMessageNotWritableException ex, Model model) {
         model.addAttribute("ex", "exception:" + ex.getMessage());
+        log.info("exception -->"+ ex.getMessage());
         return pathA+"exception/500.jsp";
     }
 
@@ -39,6 +49,7 @@ public class DefaultExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)//server code 404
     public String NoSuchRequestHandlingMethodException_eX(Model model, NoSuchRequestHandlingMethodException ex) {
         model.addAttribute("ex", "exception:" + ex.getMessage());
+        log.info("exception -->"+ ex.getMessage());
         return pathA+"exception/404.jsp";
     }
 
@@ -46,6 +57,7 @@ public class DefaultExceptionHandler {
     @ResponseStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE)//SERVER CODE 415
     public String httpMediaTypeNotSupportedException_eX(Model model, HttpMediaTypeNotSupportedException ex) {
         model.addAttribute("ex", "exception:" + ex.getMessage());
+        log.info("exception -->"+ ex.getMessage());
         return pathA+"exception/415.jsp";
     }
 
@@ -54,6 +66,15 @@ public class DefaultExceptionHandler {
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)//code 其实有多个呢,这只写这一个
     public String bindException(Model model, BindException ex) {
         model.addAttribute("ex", "exception:" + ex.getMessage());
+        log.info("exception -->"+ ex.getMessage());
         return pathA+"exception/400.jsp";
+    }
+
+    @ExceptionHandler({MapperException.class, ServiceException.class, ControllerException.class})
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)//server code 500
+    public String toOther(Model model, BindException ex){
+        model.addAttribute("ex", "exception:" + ex.getMessage());
+        log.info("exception -->"+ ex.getMessage());
+        return pathA+"exception/500.jsp";
     }
 }
